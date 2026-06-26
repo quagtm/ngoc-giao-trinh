@@ -126,35 +126,81 @@
   .stat-num { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--gold); }
   .stat-label { font-size: 11px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-top: 2px; }
 
-  /* ── NAV PILLS ── */
+  /* ── NAV INTERACTIVE ── */
   .nav-bar {
     position: sticky; top: 0; z-index: 100;
-    background: rgba(10,10,20,0.92);
-    backdrop-filter: blur(12px);
+    background: rgba(8,8,18,0.96);
+    backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--border);
-    padding: 0 16px;
-    overflow-x: auto;
-    white-space: nowrap;
-    scrollbar-width: none;
   }
-  .nav-bar::-webkit-scrollbar { display: none; }
-  .nav-inner { display: inline-flex; gap: 2px; padding: 12px 0; }
+  .nav-top {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 20px; height: 52px;
+    border-bottom: 1px solid rgba(42,42,80,0.5);
+  }
+  .nav-brand {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Playfair Display', serif;
+    font-size: 15px; color: var(--gold);
+    letter-spacing: 0.5px;
+  }
+  .nav-brand svg { width: 22px; height: 22px; }
+  .nav-progress-wrap {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .nav-progress-label { font-size: 11px; color: var(--muted); letter-spacing: 1px; }
+  .nav-progress-bar {
+    width: 80px; height: 3px; background: var(--border); border-radius: 2px; overflow: hidden;
+  }
+  .nav-progress-fill {
+    height: 100%; background: linear-gradient(90deg, var(--gold), #4EC88A);
+    border-radius: 2px; transition: width 0.3s;
+    width: 9%;
+  }
+  /* scroll rail */
+  .nav-rail {
+    display: flex; overflow-x: auto; scrollbar-width: none;
+    padding: 0 12px; gap: 0;
+  }
+  .nav-rail::-webkit-scrollbar { display: none; }
+  .nav-item {
+    position: relative; flex-shrink: 0;
+  }
   .nav-btn {
-    background: transparent;
-    border: none;
+    background: transparent; border: none;
     color: var(--muted);
     font-family: 'Inter', sans-serif;
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    padding: 6px 14px;
-    border-radius: 20px;
+    font-size: 11.5px; font-weight: 500;
+    letter-spacing: 0.3px;
+    padding: 0 14px; height: 42px;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: color 0.2s;
     white-space: nowrap;
+    display: flex; align-items: center; gap: 6px;
   }
-  .nav-btn:hover { color: var(--text); background: var(--surface); }
-  .nav-btn.active { color: var(--gold); background: rgba(201,168,76,0.12); }
+  .nav-btn .nav-icon { font-size: 13px; }
+  .nav-btn:hover { color: var(--text); }
+  .nav-btn.active { color: var(--gold); }
+  /* active underline bar */
+  .nav-btn::after {
+    content: '';
+    position: absolute; bottom: 0; left: 14px; right: 14px;
+    height: 2px; border-radius: 2px;
+    background: var(--gold);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.25s ease;
+  }
+  .nav-btn.active::after { transform: scaleX(1); }
+  /* group divider */
+  .nav-divider {
+    width: 1px; background: var(--border);
+    margin: 10px 4px; flex-shrink: 0; align-self: stretch;
+  }
+  /* jade special btn */
+  .nav-btn.jade-nav { color: #4EC88A; }
+  .nav-btn.jade-nav:hover { color: #80E8B0; }
+  .nav-btn.jade-nav.active { color: #6EC8A0; }
+  .nav-btn.jade-nav::after { background: #4EC88A; }
 
   /* ── LAYOUT ── */
   .container { max-width: 860px; margin: 0 auto; padding: 0 20px; }
@@ -389,9 +435,6 @@
   .lv-mid { background: rgba(201,168,76,0.15); color: var(--gold); }
   .lv-adv { background: rgba(224,96,122,0.15); color: #E0607A; }
 
-  .nav-btn.jade-nav { color: #6EC8A0; }
-  .nav-btn.jade-nav:hover, .nav-btn.jade-nav.active { color: #6EC8A0; background: rgba(30,122,80,0.15); }
-
   a { color: inherit; text-decoration: none; }
 </style>
 </head>
@@ -439,18 +482,67 @@
 
 <!-- NAV -->
 <nav class="nav-bar">
-  <div class="nav-inner">
-    <button class="nav-btn active" onclick="scrollTo('m1')">I. Nền Tảng</button>
-    <button class="nav-btn" onclick="scrollTo('m2')">II. Tính Chất</button>
-    <button class="nav-btn" onclick="scrollTo('m3')">III. Đá Quý</button>
-    <button class="nav-btn" onclick="scrollTo('m4')">IV. Đá Bán Quý</button>
-    <button class="nav-btn" onclick="scrollTo('m5')">V. Ngọc Á Đông</button>
-    <button class="nav-btn" onclick="scrollTo('m6')">VI. Giám Định</button>
-    <button class="nav-btn" onclick="scrollTo('m7')">VII. Xử Lý</button>
-    <button class="nav-btn" onclick="scrollTo('m8')">VIII. Mua Bán</button>
-    <button class="nav-btn" onclick="scrollTo('m9')">IX. Bảo Quản</button>
-    <button class="nav-btn" onclick="scrollTo('m10')">X. Năng Lượng</button>
-    <button class="nav-btn jade-nav" onclick="scrollTo('m11')">★ Chuyên Đề Ngọc</button>
+  <div class="nav-top">
+    <div class="nav-brand">
+      <svg viewBox="0 0 24 24" fill="none">
+        <polygon points="12,2 22,8 22,16 12,22 2,16 2,8" fill="rgba(201,168,76,0.12)" stroke="#C9A84C" stroke-width="1.2"/>
+        <polygon points="12,2 22,8 12,11" fill="rgba(201,168,76,0.2)" stroke="#C9A84C" stroke-width="0.6"/>
+        <polygon points="22,8 22,16 12,11" fill="rgba(201,168,76,0.12)" stroke="#C9A84C" stroke-width="0.6"/>
+        <polygon points="12,11 22,16 12,22" fill="rgba(201,168,76,0.25)" stroke="#C9A84C" stroke-width="0.6"/>
+        <polygon points="2,16 12,22 12,11" fill="rgba(201,168,76,0.15)" stroke="#C9A84C" stroke-width="0.6"/>
+        <polygon points="2,8 2,16 12,11" fill="rgba(201,168,76,0.10)" stroke="#C9A84C" stroke-width="0.6"/>
+        <polygon points="2,8 12,2 12,11" fill="rgba(201,168,76,0.18)" stroke="#C9A84C" stroke-width="0.6"/>
+      </svg>
+      Ngọc Học
+    </div>
+    <div class="nav-progress-wrap">
+      <span class="nav-progress-label" id="progLabel">I / XI</span>
+      <div class="nav-progress-bar"><div class="nav-progress-fill" id="progFill"></div></div>
+    </div>
+  </div>
+  <div class="nav-rail" id="navRail">
+    <!-- Nhóm 1: Kiến thức nền -->
+    <div class="nav-item">
+      <button class="nav-btn active" onclick="navGo('m1',1,this)"><span class="nav-icon">📖</span>Nền Tảng</button>
+    </div>
+    <div class="nav-item">
+      <button class="nav-btn" onclick="navGo('m2',2,this)"><span class="nav-icon">🔬</span>Tính Chất</button>
+    </div>
+    <div class="nav-divider"></div>
+    <!-- Nhóm 2: Loại đá -->
+    <div class="nav-item">
+      <button class="nav-btn" onclick="navGo('m3',3,this)"><span class="nav-icon">💎</span>Đá Quý</button>
+    </div>
+    <div class="nav-item">
+      <button class="nav-btn" onclick="navGo('m4',4,this)"><span class="nav-icon">🪨</span>Đá Bán Quý</button>
+    </div>
+    <div class="nav-item">
+      <button class="nav-btn" onclick="navGo('m5',5,this)"><span class="nav-icon">🐉</span>Ngọc Á Đông</button>
+    </div>
+    <div class="nav-divider"></div>
+    <!-- Nhóm 3: Kỹ thuật -->
+    <div class="nav-item">
+      <button class="nav-btn" onclick="navGo('m6',6,this)"><span class="nav-icon">🔍</span>Giám Định</button>
+    </div>
+    <div class="nav-item">
+      <button class="nav-btn" onclick="navGo('m7',7,this)"><span class="nav-icon">⚗️</span>Xử Lý</button>
+    </div>
+    <div class="nav-divider"></div>
+    <!-- Nhóm 4: Thực chiến -->
+    <div class="nav-item">
+      <button class="nav-btn" onclick="navGo('m8',8,this)"><span class="nav-icon">💼</span>Mua Bán</button>
+    </div>
+    <div class="nav-item">
+      <button class="nav-btn" onclick="navGo('m9',9,this)"><span class="nav-icon">🫙</span>Bảo Quản</button>
+    </div>
+    <div class="nav-item">
+      <button class="nav-btn" onclick="navGo('m10',10,this)"><span class="nav-icon">✨</span>Năng Lượng</button>
+    </div>
+    <div class="nav-divider"></div>
+    <!-- Chuyên đề -->
+    <div class="nav-item">
+      <button class="nav-btn jade-nav" onclick="navGo('m11',11,this)"><span class="nav-icon">🌿</span>Chuyên Đề Ngọc</button>
+    </div>
   </div>
 </nav>
 
@@ -573,6 +665,7 @@
     <thead>
       <tr>
         <th>Đá quý</th>
+        <th>Tên Tiếng Việt</th>
         <th>Thành phần</th>
         <th>Màu tốt nhất</th>
         <th>Xuất xứ hảo hạng</th>
@@ -582,6 +675,7 @@
     <tbody>
       <tr>
         <td><span class="gem-badge badge-d">💎 Diamond</span></td>
+        <td style="color:#E8CB7A; font-weight:600;">Kim Cương</td>
         <td>Carbon tinh khiết</td>
         <td>D–F (không màu)</td>
         <td>Botswana, Canada, Nga</td>
@@ -589,6 +683,7 @@
       </tr>
       <tr>
         <td><span class="gem-badge badge-r">🔴 Ruby</span></td>
+        <td style="color:#E0607A; font-weight:600;">Hồng Ngọc</td>
         <td>Al₂O₃ + Cr</td>
         <td>Pigeon Blood đỏ</td>
         <td>Mogok (Myanmar) ★★★</td>
@@ -596,6 +691,7 @@
       </tr>
       <tr>
         <td><span class="gem-badge badge-s">🔵 Sapphire</span></td>
+        <td style="color:#6EA4F0; font-weight:600;">Lam Ngọc</td>
         <td>Al₂O₃ + Fe, Ti</td>
         <td>Royal Blue, Cornflower</td>
         <td>Kashmir ★★★, Ceylon</td>
@@ -603,6 +699,7 @@
       </tr>
       <tr>
         <td><span class="gem-badge badge-e">🟢 Emerald</span></td>
+        <td style="color:#4EC48A; font-weight:600;">Ngọc Lục Bảo</td>
         <td>Be₃Al₂Si₆O₁₈ + Cr</td>
         <td>Vivid Green</td>
         <td>Colombia (Muzo, Chivor)</td>
@@ -610,6 +707,7 @@
       </tr>
       <tr>
         <td><span class="gem-badge badge-p">🤍 Pearl</span></td>
+        <td style="color:var(--pearl); font-weight:600;">Ngọc Trai</td>
         <td>CaCO₃ (aragonite)</td>
         <td>Hanh hồng, trắng sữa</td>
         <td>Akoya Nhật Bản, Nam Hải</td>
@@ -675,80 +773,127 @@
 
   <table class="gem-table">
     <thead>
-      <tr><th>Đá</th><th>Nhóm</th><th>Màu &amp; đặc điểm</th><th>Năng lượng truyền thống</th></tr>
+      <tr><th>Đá</th><th>Tên Tiếng Việt</th><th>Nhóm</th><th>Màu &amp; đặc điểm</th><th>Năng lượng truyền thống</th></tr>
     </thead>
     <tbody>
       <tr>
         <td><span class="gem-badge badge-a">Amethyst</span></td>
+        <td style="color:#B985E0; font-weight:600;">Thạch Anh Tím</td>
         <td>Quartz</td>
         <td>Tím nhạt → tím đậm. Mohs 7</td>
         <td>Thanh tâm, trí tuệ, kết nối tâm linh</td>
       </tr>
       <tr>
         <td><span class="gem-badge badge-g">Citrine</span></td>
+        <td style="color:#F0C040; font-weight:600;">Thạch Anh Vàng</td>
         <td>Quartz</td>
         <td>Vàng chanh → cam mật. Mohs 7</td>
         <td>Tài lộc, năng lượng tích cực, ánh mặt trời</td>
       </tr>
       <tr>
         <td><span class="gem-badge" style="background:rgba(255,180,200,0.15);color:#FFB0C8;">Rose Quartz</span></td>
+        <td style="color:#FFB0C8; font-weight:600;">Thạch Anh Hồng</td>
         <td>Quartz</td>
         <td>Hồng nhạt mờ đục. Mohs 7</td>
         <td>Tình yêu, chữa lành cảm xúc</td>
       </tr>
       <tr>
         <td><span class="gem-badge" style="background:rgba(80,60,40,0.2);color:#C0A070;">Smoky Quartz</span></td>
+        <td style="color:#C0A070; font-weight:600;">Thạch Anh Khói</td>
         <td>Quartz</td>
         <td>Nâu khói → đen. Mohs 7</td>
         <td>Tiếp đất, hóa giải năng lượng tiêu cực</td>
       </tr>
       <tr>
         <td><span class="gem-badge" style="background:rgba(60,140,200,0.15);color:#6AB4E0;">Aquamarine</span></td>
+        <td style="color:#6AB4E0; font-weight:600;">Hải Lam Ngọc</td>
         <td>Beryl</td>
         <td>Xanh biển nhạt trong trẻo. Mohs 7.5–8</td>
         <td>Bình tĩnh, giao tiếp, can đảm</td>
       </tr>
       <tr>
         <td><span class="gem-badge" style="background:rgba(255,160,60,0.15);color:#FFB040;">Topaz</span></td>
+        <td style="color:#FFB040; font-weight:600;">Hoàng Ngọc</td>
         <td>Topaz</td>
         <td>Không màu, xanh, cam, vàng. Mohs 8</td>
         <td>Sự thịnh vượng, sáng tạo</td>
       </tr>
       <tr>
         <td><span class="gem-badge" style="background:rgba(200,120,40,0.15);color:#E09030;">Moonstone</span></td>
+        <td style="color:#E09030; font-weight:600;">Đá Mặt Trăng</td>
         <td>Feldspar</td>
         <td>Ánh sữa lãng đãng. Mohs 6–6.5</td>
         <td>Nữ tính, trực giác, chu kỳ mặt trăng</td>
       </tr>
       <tr>
         <td><span class="gem-badge" style="background:rgba(100,80,200,0.15);color:#A090F0;">Labradorite</span></td>
+        <td style="color:#A090F0; font-weight:600;">Đá Cầu Vồng</td>
         <td>Feldspar</td>
         <td>Ánh ngũ sắc huyền bí. Mohs 6–6.5</td>
         <td>Chuyển hóa, bảo vệ, ma thuật</td>
       </tr>
       <tr>
         <td><span class="gem-badge" style="background:rgba(60,150,100,0.15);color:#60C080;">Malachite</span></td>
+        <td style="color:#60C080; font-weight:600;">Khổng Tước Thạch</td>
         <td>Carbonate</td>
         <td>Xanh lá vân sọc đặc trưng. Mohs 3.5–4</td>
         <td>Thay đổi, chữa lành, tâm luân</td>
       </tr>
       <tr>
         <td><span class="gem-badge" style="background:rgba(200,130,60,0.15);color:#E09040;">Tiger's Eye</span></td>
+        <td style="color:#E09040; font-weight:600;">Mắt Hổ</td>
         <td>Quartz</td>
         <td>Vàng nâu có chatoyancy. Mohs 6.5–7</td>
         <td>Dũng cảm, bảo vệ, tập trung</td>
       </tr>
       <tr>
         <td><span class="gem-badge" style="background:rgba(20,100,180,0.15);color:#40A0E0;">Lapis Lazuli</span></td>
-        <td>Đá tổng hợp</td>
+        <td style="color:#40A0E0; font-weight:600;">Thanh Kim Thạch</td>
+        <td>Đa khoáng</td>
         <td>Xanh đêm có vảy vàng pyrite. Mohs 5–6</td>
         <td>Trí tuệ, sự thật, hoàng tộc</td>
       </tr>
       <tr>
         <td><span class="gem-badge" style="background:rgba(180,100,40,0.15);color:#C08040;">Amber</span></td>
+        <td style="color:#C08040; font-weight:600;">Hổ Phách</td>
         <td>Hữu cơ</td>
-        <td>Hổ phách vàng cam. Mohs 2–2.5</td>
+        <td>Vàng cam ấm. Mohs 2–2.5</td>
         <td>Ấm áp, chữa lành, bảo vệ trẻ em</td>
+      </tr>
+      <tr style="border-top:1px solid rgba(201,168,76,0.2);">
+        <td><span class="gem-badge" style="background:rgba(220,130,40,0.18);color:#F0A040;">Sunstone</span></td>
+        <td style="color:#F0A040; font-weight:600;">Đá Mặt Trời</td>
+        <td>Feldspar</td>
+        <td>Cam đỏ lấp lánh aventurescence (vảy hematite). Mohs 6–6.5</td>
+        <td>Sinh lực, lạc quan, thu hút thịnh vượng</td>
+      </tr>
+      <tr>
+        <td><span class="gem-badge" style="background:rgba(30,120,40,0.2);color:#50C060;">Moldavite</span></td>
+        <td style="color:#50C060; font-weight:600;">Ngọc Thiên Thạch</td>
+        <td>Tektite</td>
+        <td>Xanh lá trong, dạng bong bóng. Mohs 5.5. Czech Republic</td>
+        <td>Chuyển hóa nhanh, tần số cao, mở rộng tâm thức</td>
+      </tr>
+      <tr>
+        <td><span class="gem-badge" style="background:rgba(180,30,40,0.2);color:#E05060;">Garnet</span></td>
+        <td style="color:#E05060; font-weight:600;">Hồng Lựu Thạch</td>
+        <td>Silicate</td>
+        <td>Đỏ huyết (phổ biến), xanh lá Tsavorite, cam Spessartite, tím Rhodolite. Mohs 6.5–7.5</td>
+        <td>Đam mê, sinh lực, bảo vệ, tình yêu</td>
+      </tr>
+      <tr>
+        <td><span class="gem-badge" style="background:rgba(220,60,120,0.18);color:#F060A0;">Spinel</span></td>
+        <td style="color:#F060A0; font-weight:600;">Tinh Thạch</td>
+        <td>Oxide</td>
+        <td>Đỏ, hồng, xanh lam, đen. Mohs 8. Từng bị nhầm với Ruby/Sapphire suốt nhiều thế kỷ</td>
+        <td>Đổi mới năng lượng, sinh lực, vượt qua thử thách</td>
+      </tr>
+      <tr>
+        <td><span class="gem-badge" style="background:rgba(140,60,180,0.18);color:#C080F0;">Super 7</span></td>
+        <td style="color:#C080F0; font-weight:600;">Siêu Thất Thạch</td>
+        <td>Quartz đa khoáng</td>
+        <td>Tím nâu phức hợp — 7 khoáng trong 1: Amethyst, Cacoxenite, Goethite, Lepidocrocite, Rutile, Smoky, Clear Quartz. Mohs 7</td>
+        <td>Kết hợp năng lượng 7 luân xa, tần số cao nhất trong đá thạch anh</td>
       </tr>
     </tbody>
   </table>
@@ -1660,10 +1805,24 @@
 </footer>
 
 <script>
-  function scrollTo(id) {
+  const TOTAL = 11;
+
+  function navGo(id, num, btn) {
     document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setActiveNav(btn, num);
+    // scroll nav rail to keep btn visible
+    const rail = document.getElementById('navRail');
+    const btnRect = btn.getBoundingClientRect();
+    const railRect = rail.getBoundingClientRect();
+    if (btnRect.right > railRect.right) rail.scrollLeft += btnRect.right - railRect.right + 20;
+    if (btnRect.left < railRect.left) rail.scrollLeft -= railRect.left - btnRect.left + 20;
+  }
+
+  function setActiveNav(btn, num) {
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    event.target.classList.add('active');
+    btn.classList.add('active');
+    document.getElementById('progLabel').textContent = num + ' / ' + TOTAL;
+    document.getElementById('progFill').style.width = Math.round((num / TOTAL) * 100) + '%';
   }
 
   function toggleAcc(btn) {
@@ -1676,15 +1835,29 @@
   // highlight active nav on scroll
   const sections = document.querySelectorAll('.module');
   const navBtns = document.querySelectorAll('.nav-btn');
+  const sectionMap = ['m1','m2','m3','m4','m5','m6','m7','m8','m9','m10','m11'];
+
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting) {
         const idx = Array.from(sections).indexOf(e.target);
         navBtns.forEach(b => b.classList.remove('active'));
-        if (navBtns[idx]) navBtns[idx].classList.add('active');
+        if (navBtns[idx]) {
+          navBtns[idx].classList.add('active');
+          document.getElementById('progLabel').textContent = (idx + 1) + ' / ' + TOTAL;
+          document.getElementById('progFill').style.width = Math.round(((idx + 1) / TOTAL) * 100) + '%';
+          // auto-scroll rail
+          const rail = document.getElementById('navRail');
+          const btn = navBtns[idx];
+          const btnRect = btn.getBoundingClientRect();
+          const railRect = rail.getBoundingClientRect();
+          if (btnRect.right > railRect.right || btnRect.left < railRect.left) {
+            btn.scrollIntoView({ inline: 'nearest', block: 'nearest' });
+          }
+        }
       }
     });
-  }, { threshold: 0.3 });
+  }, { threshold: 0.35 });
   sections.forEach(s => observer.observe(s));
 </script>
 </body>
