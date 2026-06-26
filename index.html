@@ -1,0 +1,1622 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Giáo Trình Ngọc Học</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --night: #0A0A14;
+    --deep: #111124;
+    --surface: #181830;
+    --card: #1E1E38;
+    --border: #2A2A50;
+    --gold: #C9A84C;
+    --gold-light: #E8CB7A;
+    --gold-dim: #7A6030;
+    --amethyst: #7B4FA6;
+    --sapphire: #2456A4;
+    --ruby: #A62040;
+    --emerald: #1E7A50;
+    --pearl: #D4C9BE;
+    --text: #EDE8E0;
+    --muted: #8A8AAA;
+    --accent: #C9A84C;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--night);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    padding: 60px 24px;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 30% 40%, rgba(123,79,166,0.25) 0%, transparent 55%),
+                radial-gradient(ellipse at 75% 60%, rgba(36,86,164,0.2) 0%, transparent 50%),
+                radial-gradient(ellipse at 55% 20%, rgba(201,168,76,0.12) 0%, transparent 45%),
+                var(--night);
+  }
+
+  /* facet grid background */
+  .facet-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(60deg, rgba(201,168,76,0.04) 1px, transparent 1px),
+      linear-gradient(-60deg, rgba(201,168,76,0.04) 1px, transparent 1px),
+      linear-gradient(0deg, rgba(201,168,76,0.03) 1px, transparent 1px);
+    background-size: 60px 104px, 60px 104px, 60px 104px;
+    pointer-events: none;
+  }
+
+  .gem-icon {
+    width: 90px; height: 90px;
+    margin: 0 auto 32px;
+    position: relative;
+    animation: float 4s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .gem-icon svg { width: 100%; height: 100%; filter: drop-shadow(0 0 24px rgba(201,168,76,0.5)); }
+
+  .hero-eyebrow {
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 18px;
+    font-weight: 500;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 6vw, 4.2rem);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+
+  .hero-sub {
+    font-size: 15px;
+    color: var(--muted);
+    max-width: 540px;
+    margin: 20px auto 44px;
+    line-height: 1.8;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .stat { text-align: center; }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--gold); }
+  .stat-label { font-size: 11px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-top: 2px; }
+
+  /* ── NAV PILLS ── */
+  .nav-bar {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,10,20,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 16px;
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: none;
+  }
+  .nav-bar::-webkit-scrollbar { display: none; }
+  .nav-inner { display: inline-flex; gap: 2px; padding: 12px 0; }
+  .nav-btn {
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .nav-btn:hover { color: var(--text); background: var(--surface); }
+  .nav-btn.active { color: var(--gold); background: rgba(201,168,76,0.12); }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 860px; margin: 0 auto; padding: 0 20px; }
+
+  /* ── SECTION ── */
+  .module {
+    border-top: 1px solid var(--border);
+    padding: 72px 0 60px;
+  }
+
+  .module-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+
+  .module-num {
+    flex-shrink: 0;
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--gold-dim);
+    font-weight: 600;
+    margin-top: 4px;
+  }
+
+  .module-num.c-amethyst { border-color: rgba(123,79,166,0.4); background: rgba(123,79,166,0.1); color: #B985E0; }
+  .module-num.c-sapphire { border-color: rgba(36,86,164,0.4); background: rgba(36,86,164,0.1); color: #6EA4F0; }
+  .module-num.c-ruby { border-color: rgba(166,32,64,0.4); background: rgba(166,32,64,0.1); color: #E0607A; }
+  .module-num.c-emerald { border-color: rgba(30,122,80,0.4); background: rgba(30,122,80,0.1); color: #4EC48A; }
+  .module-num.c-pearl { border-color: rgba(212,201,190,0.3); background: rgba(212,201,190,0.06); color: var(--pearl); }
+  .module-num.c-gold { border-color: rgba(201,168,76,0.4); background: rgba(201,168,76,0.08); color: var(--gold); }
+
+  .module-title-wrap {}
+  .module-eyebrow {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .module-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.65rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.25;
+  }
+
+  /* ── CARDS ── */
+  .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 28px; }
+  @media(max-width:600px){ .card-grid { grid-template-columns: 1fr; } }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .card:hover { border-color: var(--gold-dim); transform: translateY(-2px); }
+
+  .card-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gold-light);
+    margin-bottom: 8px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .card-title .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--gold); flex-shrink: 0;
+  }
+  .card p { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+  /* ── TOPIC LIST ── */
+  .topic-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .topic-list li {
+    display: flex; align-items: flex-start; gap: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-size: 14px;
+    color: var(--text);
+    transition: border-color 0.2s;
+  }
+  .topic-list li:hover { border-color: var(--gold-dim); }
+  .topic-list li .icon { color: var(--gold); font-size: 16px; flex-shrink: 0; line-height: 1.6; }
+  .topic-list li .desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  /* ── GEM TABLE ── */
+  .gem-table { width: 100%; border-collapse: collapse; margin: 24px 0; }
+  .gem-table th {
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--muted); font-weight: 500;
+    padding: 10px 14px; text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .gem-table td {
+    padding: 13px 14px; font-size: 13px; color: var(--text);
+    border-bottom: 1px solid rgba(42,42,80,0.5);
+    vertical-align: top;
+  }
+  .gem-table tr:hover td { background: var(--surface); }
+  .gem-badge {
+    display: inline-block;
+    padding: 2px 10px; border-radius: 20px;
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  .badge-r { background: rgba(166,32,64,0.2); color: #E0607A; }
+  .badge-s { background: rgba(36,86,164,0.2); color: #6EA4F0; }
+  .badge-e { background: rgba(30,122,80,0.2); color: #4EC48A; }
+  .badge-d { background: rgba(201,168,76,0.15); color: var(--gold-light); }
+  .badge-p { background: rgba(212,201,190,0.12); color: var(--pearl); }
+  .badge-a { background: rgba(123,79,166,0.2); color: #B985E0; }
+  .badge-g { background: rgba(50,200,100,0.12); color: #6EEEA0; }
+
+  /* ── HIGHLIGHT BOX ── */
+  .highlight {
+    border-left: 3px solid var(--gold);
+    background: rgba(201,168,76,0.07);
+    border-radius: 0 10px 10px 0;
+    padding: 18px 20px;
+    margin: 28px 0;
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.8;
+  }
+  .highlight strong { color: var(--gold-light); }
+
+  /* ── MOHS TABLE ── */
+  .mohs-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 20px 0; }
+  @media(max-width:500px){ .mohs-grid { grid-template-columns: repeat(3,1fr); } }
+  .mohs-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 10px;
+    text-align: center;
+    transition: border-color 0.2s;
+  }
+  .mohs-item:hover { border-color: var(--gold-dim); }
+  .mohs-num { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--gold); }
+  .mohs-name { font-size: 11px; color: var(--muted); margin-top: 3px; }
+  .mohs-gem { font-size: 10px; color: var(--text); margin-top: 2px; font-style: italic; }
+
+  /* ── CHAKRA ── */
+  .chakra-list { display: flex; flex-direction: column; gap: 10px; margin: 20px 0; }
+  .chakra-row {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+  }
+  .chakra-dot { width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0; }
+  .chakra-name { font-size: 13px; font-weight: 500; color: var(--text); min-width: 130px; }
+  .chakra-gems { font-size: 12px; color: var(--muted); }
+
+  /* ── NGUNHANH ── */
+  .ngu-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin: 20px 0; }
+  @media(max-width:560px){ .ngu-grid { grid-template-columns: repeat(3,1fr); } }
+  .ngu-card {
+    border-radius: 10px;
+    padding: 16px 12px;
+    text-align: center;
+    border: 1px solid;
+  }
+  .ngu-name { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+  .ngu-gems { font-size: 11px; line-height: 1.7; }
+
+  .ngu-moc { border-color: rgba(46,160,67,0.4); background: rgba(46,160,67,0.08); }
+  .ngu-moc .ngu-name { color: #4EC48A; }
+  .ngu-hoa { border-color: rgba(220,80,40,0.4); background: rgba(220,80,40,0.08); }
+  .ngu-hoa .ngu-name { color: #FF7A5A; }
+  .ngu-tho { border-color: rgba(200,160,60,0.4); background: rgba(200,160,60,0.08); }
+  .ngu-tho .ngu-name { color: var(--gold-light); }
+  .ngu-kim { border-color: rgba(180,180,220,0.4); background: rgba(180,180,220,0.06); }
+  .ngu-kim .ngu-name { color: #C0C0E0; }
+  .ngu-thuy { border-color: rgba(36,120,200,0.4); background: rgba(36,120,200,0.08); }
+  .ngu-thuy .ngu-name { color: #6EA4F0; }
+
+  /* ── FOOTER ── */
+  .footer {
+    border-top: 1px solid var(--border);
+    padding: 48px 20px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 2;
+  }
+  .footer em { color: var(--gold); font-style: italic; font-family: 'Playfair Display', serif; font-size: 14px; }
+
+  /* ── ACCORDION ── */
+  .acc-item { border: 1px solid var(--border); border-radius: 10px; margin-bottom: 10px; overflow: hidden; }
+  .acc-trigger {
+    width: 100%; background: var(--surface);
+    border: none; cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 16px 20px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px; font-weight: 500; color: var(--text);
+    text-align: left;
+    transition: background 0.2s;
+  }
+  .acc-trigger:hover { background: var(--card); }
+  .acc-arrow { color: var(--gold); font-size: 18px; transition: transform 0.3s; }
+  .acc-trigger.open .acc-arrow { transform: rotate(45deg); }
+  .acc-body { display: none; padding: 0 20px 18px; background: var(--card); }
+  .acc-body.open { display: block; }
+  .acc-body p { font-size: 13px; color: var(--muted); line-height: 1.8; margin-top: 14px; }
+  .acc-body ul { margin-top: 12px; padding-left: 18px; }
+  .acc-body li { font-size: 13px; color: var(--muted); line-height: 2; }
+
+  /* ── PROGRESS TAG ── */
+  .level-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 10px; font-weight: 600; letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 10px; border-radius: 20px;
+    margin-left: 12px;
+    vertical-align: middle;
+  }
+  .lv-basic { background: rgba(78,196,138,0.15); color: #4EC48A; }
+  .lv-mid { background: rgba(201,168,76,0.15); color: var(--gold); }
+  .lv-adv { background: rgba(224,96,122,0.15); color: #E0607A; }
+
+  .nav-btn.jade-nav { color: #6EC8A0; }
+  .nav-btn.jade-nav:hover, .nav-btn.jade-nav.active { color: #6EC8A0; background: rgba(30,122,80,0.15); }
+
+  a { color: inherit; text-decoration: none; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="facet-grid"></div>
+
+  <div style="position:relative; z-index:1;">
+    <div class="gem-icon">
+      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="50,5 90,32 90,68 50,95 10,68 10,32" fill="rgba(201,168,76,0.08)" stroke="#C9A84C" stroke-width="1.5"/>
+        <polygon points="50,5 90,32 50,45" fill="rgba(201,168,76,0.18)" stroke="#C9A84C" stroke-width="0.8"/>
+        <polygon points="90,32 90,68 50,45" fill="rgba(201,168,76,0.12)" stroke="#C9A84C" stroke-width="0.8"/>
+        <polygon points="90,68 50,95 50,45" fill="rgba(201,168,76,0.22)" stroke="#C9A84C" stroke-width="0.8"/>
+        <polygon points="50,95 10,68 50,45" fill="rgba(201,168,76,0.15)" stroke="#C9A84C" stroke-width="0.8"/>
+        <polygon points="10,68 10,32 50,45" fill="rgba(201,168,76,0.10)" stroke="#C9A84C" stroke-width="0.8"/>
+        <polygon points="10,32 50,5 50,45" fill="rgba(201,168,76,0.20)" stroke="#C9A84C" stroke-width="0.8"/>
+        <circle cx="50" cy="50" r="3" fill="#E8CB7A" opacity="0.6"/>
+      </svg>
+    </div>
+
+    <p class="hero-eyebrow">Giáo Trình Chuyên Sâu</p>
+    <h1>Nghệ Thuật<br><em>Ngọc Học</em></h1>
+    <p class="hero-sub">Từ nền tảng khoa học đến phong thủy tâm linh — hành trình khám phá thế giới ngọc đá quý một cách hệ thống và toàn diện.</p>
+
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">11</div>
+        <div class="stat-label">Chương học</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">60+</div>
+        <div class="stat-label">Chủ đề</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Cấp độ</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NAV -->
+<nav class="nav-bar">
+  <div class="nav-inner">
+    <button class="nav-btn active" onclick="scrollTo('m1')">I. Nền Tảng</button>
+    <button class="nav-btn" onclick="scrollTo('m2')">II. Tính Chất</button>
+    <button class="nav-btn" onclick="scrollTo('m3')">III. Đá Quý</button>
+    <button class="nav-btn" onclick="scrollTo('m4')">IV. Đá Bán Quý</button>
+    <button class="nav-btn" onclick="scrollTo('m5')">V. Ngọc Á Đông</button>
+    <button class="nav-btn" onclick="scrollTo('m6')">VI. Giám Định</button>
+    <button class="nav-btn" onclick="scrollTo('m7')">VII. Xử Lý</button>
+    <button class="nav-btn" onclick="scrollTo('m8')">VIII. Mua Bán</button>
+    <button class="nav-btn" onclick="scrollTo('m9')">IX. Bảo Quản</button>
+    <button class="nav-btn" onclick="scrollTo('m10')">X. Năng Lượng</button>
+    <button class="nav-btn jade-nav" onclick="scrollTo('m11')">★ Chuyên Đề Ngọc</button>
+  </div>
+</nav>
+
+<div class="container">
+
+<!-- ══ MODULE 1 ══ -->
+<section class="module" id="m1">
+  <div class="module-header">
+    <div class="module-num c-gold">I</div>
+    <div class="module-title-wrap">
+      <div class="module-eyebrow">Chương 1 · Cơ Bản <span class="level-tag lv-basic">Cơ bản</span></div>
+      <div class="module-title">Nền Tảng Ngọc Học</div>
+    </div>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Ngọc đá quý là gì?</div>
+      <p>Khoáng vật tự nhiên có độ bền, vẻ đẹp và sự hiếm có. Ba tiêu chí: <strong>Beauty · Durability · Rarity</strong>. Phân biệt ngọc tự nhiên, tổng hợp và xử lý.</p>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Lịch sử &amp; văn hóa</div>
+      <p>Vai trò của ngọc trong các nền văn minh Á Đông, Ai Cập, Hy Lạp. Ngọc như biểu tượng quyền lực, tâm linh và thẩm mỹ qua các thời đại.</p>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Phân loại đá</div>
+      <p><strong>Precious:</strong> Kim cương, Ruby, Sapphire, Emerald. <strong>Semi-precious:</strong> tất cả còn lại. Ranh giới thương mại, không phải khoa học.</p>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Nguồn gốc hình thành</div>
+      <p>Đá magma (basalt, granite), đá biến chất (đới nhiệt áp cao), đá trầm tích. Hiểu nguồn gốc giúp biết vị trí khai thác.</p>
+    </div>
+  </div>
+
+  <div class="highlight">
+    <strong>💡 Nguyên tắc vàng:</strong> Ngọc tự nhiên chưa xử lý (untreated) luôn có giá trị cao nhất. Khi mua, luôn hỏi: <em>"Có xử lý gì không? Có giấy chứng nhận không?"</em>
+  </div>
+</section>
+
+<!-- ══ MODULE 2 ══ -->
+<section class="module" id="m2">
+  <div class="module-header">
+    <div class="module-num c-sapphire">II</div>
+    <div class="module-title-wrap">
+      <div class="module-eyebrow">Chương 2 · Khoa Học <span class="level-tag lv-basic">Cơ bản</span></div>
+      <div class="module-title">Tính Chất Vật Lý &amp; Hóa Học</div>
+    </div>
+  </div>
+
+  <p style="color:var(--muted); margin-bottom:24px; font-size:14px;">Hiểu tính chất giúp nhận diện, giám định và đánh giá đúng giá trị từng loại đá.</p>
+
+  <h3 style="font-family:'Playfair Display',serif; color:var(--gold); font-size:1rem; margin-bottom:16px;">Thang Độ Cứng Mohs (1–10)</h3>
+  <div class="mohs-grid">
+    <div class="mohs-item"><div class="mohs-num">1–2</div><div class="mohs-name">Talc · Gypsum</div><div class="mohs-gem">Cào bằng móng tay</div></div>
+    <div class="mohs-item"><div class="mohs-num">3–4</div><div class="mohs-name">Calcite · Fluorite</div><div class="mohs-gem">Cào bằng xu đồng</div></div>
+    <div class="mohs-item"><div class="mohs-num">5</div><div class="mohs-name">Apatite</div><div class="mohs-gem">Kính cửa sổ</div></div>
+    <div class="mohs-item"><div class="mohs-num">6–7</div><div class="mohs-name">Feldspar · Quartz</div><div class="mohs-gem">Thạch anh, Jade</div></div>
+    <div class="mohs-item"><div class="mohs-num">7.5–8</div><div class="mohs-name">Topaz · Beryl</div><div class="mohs-gem">Aquamarine, Emerald</div></div>
+    <div class="mohs-item"><div class="mohs-num">9</div><div class="mohs-name">Corundum</div><div class="mohs-gem">Ruby, Sapphire</div></div>
+    <div class="mohs-item"><div class="mohs-num">10</div><div class="mohs-name">Diamond</div><div class="mohs-gem">Cứng nhất tự nhiên</div></div>
+  </div>
+
+  <ul class="topic-list" style="margin-top:24px;">
+    <li>
+      <span class="icon">⟨n⟩</span>
+      <div>
+        <div><strong>Chiết suất (Refractive Index)</strong></div>
+        <div class="desc">Đo độ bẻ cong ánh sáng. Diamond: 2.42 (rất cao → lấp lánh). Topaz: 1.62. Thạch anh: 1.54. Dùng refractometer để đo.</div>
+      </div>
+    </li>
+    <li>
+      <span class="icon">🔆</span>
+      <div>
+        <div><strong>Độ tán sắc (Dispersion)</strong></div>
+        <div class="desc">Khả năng phân tách ánh sáng thành màu cầu vồng. Kim cương nổi tiếng với "fire" — hiệu ứng tán sắc rực rỡ nhất trong đá tự nhiên.</div>
+      </div>
+    </li>
+    <li>
+      <span class="icon">🪨</span>
+      <div>
+        <div><strong>Tỷ trọng riêng (Specific Gravity)</strong></div>
+        <div class="desc">Kim cương: 3.52 · Ruby/Sapphire: ~4.0 · Thạch anh: 2.65. Dùng cân thủy tĩnh hoặc dung dịch nặng để đo nhanh.</div>
+      </div>
+    </li>
+    <li>
+      <span class="icon">💎</span>
+      <div>
+        <div><strong>Vết tách &amp; vỡ (Cleavage &amp; Fracture)</strong></div>
+        <div class="desc">Diamond tách hoàn hảo theo 4 hướng → cắt mài dễ. Jade không có cleavage → bền khi va đập. Emerald dễ vỡ → cần cẩn thận khi đeo.</div>
+      </div>
+    </li>
+    <li>
+      <span class="icon">🎨</span>
+      <div>
+        <div><strong>Nguồn gốc màu sắc</strong></div>
+        <div class="desc"><strong>Allochromatic:</strong> màu do tạp chất (Ruby đỏ do Cr³⁺, Sapphire xanh do Fe+Ti). <strong>Idiochromatic:</strong> màu do thành phần cơ bản (Malachite xanh lá do Cu).</div>
+      </div>
+    </li>
+    <li>
+      <span class="icon">🔭</span>
+      <div>
+        <div><strong>Hiện tượng quang học đặc biệt</strong></div>
+        <div class="desc">Asterism (sao 6 cánh trong Star Ruby/Sapphire) · Chatoyancy (mắt mèo) · Adularescence (ánh sữa trong Moonstone) · Labradorescence (ánh ngũ sắc trong Labradorite).</div>
+      </div>
+    </li>
+  </ul>
+</section>
+
+<!-- ══ MODULE 3 ══ -->
+<section class="module" id="m3">
+  <div class="module-header">
+    <div class="module-num c-ruby">III</div>
+    <div class="module-title-wrap">
+      <div class="module-eyebrow">Chương 3 · Đá Quý <span class="level-tag lv-mid">Trung cấp</span></div>
+      <div class="module-title">Bộ Tứ Đá Quý &amp; Ngọc Trai</div>
+    </div>
+  </div>
+
+  <table class="gem-table">
+    <thead>
+      <tr>
+        <th>Đá quý</th>
+        <th>Thành phần</th>
+        <th>Màu tốt nhất</th>
+        <th>Xuất xứ hảo hạng</th>
+        <th>Mohs</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="gem-badge badge-d">💎 Diamond</span></td>
+        <td>Carbon tinh khiết</td>
+        <td>D–F (không màu)</td>
+        <td>Botswana, Canada, Nga</td>
+        <td>10</td>
+      </tr>
+      <tr>
+        <td><span class="gem-badge badge-r">🔴 Ruby</span></td>
+        <td>Al₂O₃ + Cr</td>
+        <td>Pigeon Blood đỏ</td>
+        <td>Mogok (Myanmar) ★★★</td>
+        <td>9</td>
+      </tr>
+      <tr>
+        <td><span class="gem-badge badge-s">🔵 Sapphire</span></td>
+        <td>Al₂O₃ + Fe, Ti</td>
+        <td>Royal Blue, Cornflower</td>
+        <td>Kashmir ★★★, Ceylon</td>
+        <td>9</td>
+      </tr>
+      <tr>
+        <td><span class="gem-badge badge-e">🟢 Emerald</span></td>
+        <td>Be₃Al₂Si₆O₁₈ + Cr</td>
+        <td>Vivid Green</td>
+        <td>Colombia (Muzo, Chivor)</td>
+        <td>7.5–8</td>
+      </tr>
+      <tr>
+        <td><span class="gem-badge badge-p">🤍 Pearl</span></td>
+        <td>CaCO₃ (aragonite)</td>
+        <td>Hanh hồng, trắng sữa</td>
+        <td>Akoya Nhật Bản, Nam Hải</td>
+        <td>2.5–4.5</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="acc-item">
+    <button class="acc-trigger" onclick="toggleAcc(this)">
+      4C của Kim Cương (Cut · Color · Clarity · Carat)
+      <span class="acc-arrow">+</span>
+    </button>
+    <div class="acc-body">
+      <ul>
+        <li><strong>Cut (Cắt mài):</strong> Ảnh hưởng lớn nhất đến lấp lánh. Thang: Excellent → Very Good → Good → Fair → Poor. Brilliant Round 57 facets là chuẩn.</li>
+        <li><strong>Color (Màu sắc):</strong> D (không màu) → Z (vàng nhạt). D–F: colorless premium. G–J: near colorless tốt cho giá trị/tiền.</li>
+        <li><strong>Clarity (Độ trong):</strong> FL (Flawless) → IF → VVS1/2 → VS1/2 → SI1/2 → I1/2/3. VS2 trở lên: không thấy bằng mắt thường.</li>
+        <li><strong>Carat (Trọng lượng):</strong> 1 carat = 0.2 gram. Giá tăng phi tuyến theo carat (0.5ct → 1ct: giá/ct có thể x3 vì hiếm).</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="acc-item">
+    <button class="acc-trigger" onclick="toggleAcc(this)">
+      Ruby — Nhận biết và đánh giá chất lượng
+      <span class="acc-arrow">+</span>
+    </button>
+    <div class="acc-body">
+      <p>"Pigeon Blood" là màu đỏ bão hòa cao với sắc hồng nhẹ, đặc trưng Mogok Myanmar. Ruby Burma thường có huỳnh quang mạnh dưới UV do ít Fe. Ruby Thái Lan/Campuchia màu đậm hơn, ít huỳnh quang.</p>
+      <ul>
+        <li>Chứng nhận GRS "Pigeon Blood" hoặc AGL "Finest Quality" tăng giá x2–5 lần</li>
+        <li>Hơn 95% ruby thị trường đã nhiệt luyện (heat treatment) — hoàn toàn hợp lệ nhưng phải khai báo</li>
+        <li>Fissure filling (tẩm thủy tinh) làm giảm giá trị nghiêm trọng</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="acc-item">
+    <button class="acc-trigger" onclick="toggleAcc(this)">
+      Ngọc Trai — Tự nhiên, nuôi cấy và nhân tạo
+      <span class="acc-arrow">+</span>
+    </button>
+    <div class="acc-body">
+      <ul>
+        <li><strong>Natural Pearl:</strong> Cực hiếm, cực đắt. Nhân tạo hoàn toàn từ môi trường. Cần X-ray để xác nhận.</li>
+        <li><strong>Cultured Pearl:</strong> Người nuôi cấy → Akoya (Nhật, <10mm), South Sea (trắng, vàng, >12mm), Tahitian (đen xanh), Freshwater (Trung Quốc, giá tốt).</li>
+        <li><strong>Đánh giá:</strong> Luster (ánh kim loại) + Surface (ít tỳ vết) + Shape (tròn hoàn hảo) + Size + Color matching (dây ngọc).</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══ MODULE 4 ══ -->
+<section class="module" id="m4">
+  <div class="module-header">
+    <div class="module-num c-amethyst">IV</div>
+    <div class="module-title-wrap">
+      <div class="module-eyebrow">Chương 4 · Đá Bán Quý <span class="level-tag lv-basic">Cơ bản</span></div>
+      <div class="module-title">Thế Giới Đá Bán Quý</div>
+    </div>
+  </div>
+
+  <table class="gem-table">
+    <thead>
+      <tr><th>Đá</th><th>Nhóm</th><th>Màu &amp; đặc điểm</th><th>Năng lượng truyền thống</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="gem-badge badge-a">Amethyst</span></td>
+        <td>Quartz</td>
+        <td>Tím nhạt → tím đậm. Mohs 7</td>
+        <td>Thanh tâm, trí tuệ, kết nối tâm linh</td>
+      </tr>
+      <tr>
+        <td><span class="gem-badge badge-g">Citrine</span></td>
+        <td>Quartz</td>
+        <td>Vàng chanh → cam mật. Mohs 7</td>
+        <td>Tài lộc, năng lượng tích cực, ánh mặt trời</td>
+      </tr>
+      <tr>
+        <td><span class="gem-badge" style="background:rgba(255,180,200,0.15);color:#FFB0C8;">Rose Quartz</span></td>
+        <td>Quartz</td>
+        <td>Hồng nhạt mờ đục. Mohs 7</td>
+        <td>Tình yêu, chữa lành cảm xúc</td>
+      </tr>
+      <tr>
+        <td><span class="gem-badge" style="background:rgba(80,60,40,0.2);color:#C0A070;">Smoky Quartz</span></td>
+        <td>Quartz</td>
+        <td>Nâu khói → đen. Mohs 7</td>
+        <td>Tiếp đất, hóa giải năng lượng tiêu cực</td>
+      </tr>
+      <tr>
+        <td><span class="gem-badge" style="background:rgba(60,140,200,0.15);color:#6AB4E0;">Aquamarine</span></td>
+        <td>Beryl</td>
+        <td>Xanh biển nhạt trong trẻo. Mohs 7.5–8</td>
+        <td>Bình tĩnh, giao tiếp, can đảm</td>
+      </tr>
+      <tr>
+        <td><span class="gem-badge" style="background:rgba(255,160,60,0.15);color:#FFB040;">Topaz</span></td>
+        <td>Topaz</td>
+        <td>Không màu, xanh, cam, vàng. Mohs 8</td>
+        <td>Sự thịnh vượng, sáng tạo</td>
+      </tr>
+      <tr>
+        <td><span class="gem-badge" style="background:rgba(200,120,40,0.15);color:#E09030;">Moonstone</span></td>
+        <td>Feldspar</td>
+        <td>Ánh sữa lãng đãng. Mohs 6–6.5</td>
+        <td>Nữ tính, trực giác, chu kỳ mặt trăng</td>
+      </tr>
+      <tr>
+        <td><span class="gem-badge" style="background:rgba(100,80,200,0.15);color:#A090F0;">Labradorite</span></td>
+        <td>Feldspar</td>
+        <td>Ánh ngũ sắc huyền bí. Mohs 6–6.5</td>
+        <td>Chuyển hóa, bảo vệ, ma thuật</td>
+      </tr>
+      <tr>
+        <td><span class="gem-badge" style="background:rgba(60,150,100,0.15);color:#60C080;">Malachite</span></td>
+        <td>Carbonate</td>
+        <td>Xanh lá vân sọc đặc trưng. Mohs 3.5–4</td>
+        <td>Thay đổi, chữa lành, tâm luân</td>
+      </tr>
+      <tr>
+        <td><span class="gem-badge" style="background:rgba(200,130,60,0.15);color:#E09040;">Tiger's Eye</span></td>
+        <td>Quartz</td>
+        <td>Vàng nâu có chatoyancy. Mohs 6.5–7</td>
+        <td>Dũng cảm, bảo vệ, tập trung</td>
+      </tr>
+      <tr>
+        <td><span class="gem-badge" style="background:rgba(20,100,180,0.15);color:#40A0E0;">Lapis Lazuli</span></td>
+        <td>Đá tổng hợp</td>
+        <td>Xanh đêm có vảy vàng pyrite. Mohs 5–6</td>
+        <td>Trí tuệ, sự thật, hoàng tộc</td>
+      </tr>
+      <tr>
+        <td><span class="gem-badge" style="background:rgba(180,100,40,0.15);color:#C08040;">Amber</span></td>
+        <td>Hữu cơ</td>
+        <td>Hổ phách vàng cam. Mohs 2–2.5</td>
+        <td>Ấm áp, chữa lành, bảo vệ trẻ em</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ══ MODULE 5 ══ -->
+<section class="module" id="m5">
+  <div class="module-header">
+    <div class="module-num c-emerald">V</div>
+    <div class="module-title-wrap">
+      <div class="module-eyebrow">Chương 5 · Á Đông <span class="level-tag lv-mid">Trung cấp</span></div>
+      <div class="module-title">Ngọc Trong Văn Hóa Á Đông</div>
+    </div>
+  </div>
+
+  <div class="acc-item">
+    <button class="acc-trigger" onclick="toggleAcc(this)">
+      Jade — Ngọc bích (Nephrite) vs Phỉ thúy (Jadeite)
+      <span class="acc-arrow">+</span>
+    </button>
+    <div class="acc-body">
+      <ul>
+        <li><strong>Nephrite (Ngọc bích truyền thống):</strong> Ca₂(Mg,Fe)₅Si₈O₂₂(OH)₂. Màu trắng, xanh lá, đen. Cứng hơn thép (Mohs 6–6.5) nhưng dai hơn, không dễ vỡ. Xuất xứ: Hotan (Tân Cương, TQ), Canada, New Zealand.</li>
+        <li><strong>Jadeite (Phỉ thúy):</strong> NaAlSi₂O₆. Mohs 6.5–7. Màu phong phú hơn — "Imperial Jade" xanh lá trong suốt là đắt nhất. Hàng triệu USD/kg. Chủ yếu từ Myanmar.</li>
+        <li><strong>Phân biệt nhanh:</strong> Gõ nhẹ → Jadeite có âm trong trẻo hơn. Tỷ trọng: Nephrite 2.9–3.1, Jadeite 3.2–3.4. Cần gemologist hoặc FTIR để chắc chắn.</li>
+        <li><strong>Cấp độ Jade A/B/C:</strong> A = tự nhiên chưa xử lý. B = tẩy màu + tẩm polymer. C = nhuộm màu. Chỉ mua Jade-A có giấy.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="acc-item">
+    <button class="acc-trigger" onclick="toggleAcc(this)">
+      San hô đỏ (Coral) — Biểu tượng may mắn Á Đông
+      <span class="acc-arrow">+</span>
+    </button>
+    <div class="acc-body">
+      <ul>
+        <li>Nguồn gốc hữu cơ từ CaCO₃ của san hô Corallium rubrum. Mohs 3–4.</li>
+        <li>Màu đỏ vermillion (Oxblood Red) là quý nhất, sau là đỏ cam, hồng.</li>
+        <li>Xuất xứ: Địa Trung Hải (Sardinia, Sicily), Nhật Bản (Moro).</li>
+        <li>Luật CITES kiểm soát thương mại quốc tế — cần kiểm tra nguồn gốc hợp pháp.</li>
+        <li>Phân biệt giả: Nhựa nhuộm đỏ rất phổ biến. Thử acetone: nhựa bị phai màu, san hô thật không.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="acc-item">
+    <button class="acc-trigger" onclick="toggleAcc(this)">
+      Hổ phách (Amber) — Nhựa cây hóa đá triệu năm
+      <span class="acc-arrow">+</span>
+    </button>
+    <div class="acc-body">
+      <ul>
+        <li>Nhựa cây hóa đá 30–90 triệu năm. Nhẹ (SG 1.05–1.10), nổi trong nước muối.</li>
+        <li>Baltic Amber (Ba Lan, Nga) phổ biến nhất — succinite, hàm lượng succinic acid cao.</li>
+        <li>Dominican Amber thường có inclusions (bọ cánh cứng, kiến trong hổ phách) — giá trị cao hơn.</li>
+        <li>Phân biệt Copal (nhựa trẻ) vs Amber thật: Copal tan khi nhỏ acetone, Amber không.</li>
+        <li>Hổ phách huyết (Blood Amber từ Myanmar) có tranh cãi đạo đức — cân nhắc khi mua.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="highlight" style="margin-top:28px;">
+    <strong>🐉 Ngọc trong triết học Khổng Tử:</strong> Ngọc bích tượng trưng cho 5 đức: Nhân (mềm mại bên trong) · Nghĩa (sắc sảo nhưng không sắc bén) · Trí (âm trong) · Dũng (không gãy khi vỡ) · Thanh (vân đá).
+  </div>
+</section>
+
+<!-- ══ MODULE 6 ══ -->
+<section class="module" id="m6">
+  <div class="module-header">
+    <div class="module-num c-sapphire">VI</div>
+    <div class="module-title-wrap">
+      <div class="module-eyebrow">Chương 6 · Giám Định <span class="level-tag lv-mid">Trung cấp</span></div>
+      <div class="module-title">Kỹ Năng Giám Định Ngọc</div>
+    </div>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Dụng cụ cơ bản</div>
+      <p><strong>Loupe 10x</strong> (triplet achromatic) · <strong>UV lamp</strong> (longwave + shortwave) · <strong>Refractometer</strong> · <strong>Polariscope</strong> · <strong>Cân thủy tĩnh</strong>. Bộ cơ bản ~3–5 triệu VND.</p>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Dụng cụ nâng cao</div>
+      <p><strong>Spectrometer</strong> (FTIR, Raman) · <strong>Chelsea filter</strong> (nhận biết Emerald giả) · <strong>Microscope gemological</strong> · <strong>DiamondView</strong> cho diamond tổng hợp.</p>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Phòng lab &amp; chứng thư</div>
+      <p><strong>GIA</strong> (diamond, tốt nhất) · <strong>AGL</strong> (colored stones) · <strong>Gübelin</strong> (Thụy Sĩ, prestigious) · <strong>GRS</strong> (ruby/sapphire/emerald "descriptors") · <strong>SSEF</strong>.</p>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Nhận biết bằng mắt</div>
+      <p>Bong bóng tròn → thủy tinh. Mặt vỡ conchoidal → thủy tinh. Bẻ đôi lưỡng chiết → đá thật (dùng polariscope). "Too perfect" màu đều → nghi ngờ synthetic.</p>
+    </div>
+  </div>
+
+  <ul class="topic-list" style="margin-top:24px;">
+    <li>
+      <span class="icon">🔍</span>
+      <div>
+        <div><strong>Kỹ thuật dùng Loupe 10x</strong></div>
+        <div class="desc">Giữ loupe sát mắt, đưa đá lại gần. Tìm: inclusions (vết nứt, bọt khí, khoáng vật bên trong), growth patterns, facet lines. Bọt tròn = thủy tinh. Silk needle = corundum tự nhiên.</div>
+      </div>
+    </li>
+    <li>
+      <span class="icon">🟣</span>
+      <div>
+        <div><strong>UV Fluorescence — đọc phản ứng đá</strong></div>
+        <div class="desc">Ruby Burma: huỳnh quang đỏ mạnh LW. Diamond tự nhiên: thường xanh nhạt LW. Emerald tổng hợp (Chatham): đỏ cam LW. Ngọc trai tự nhiên: thường xanh nhạt. Không phải quy tắc tuyệt đối — chỉ gợi ý.</div>
+      </div>
+    </li>
+    <li>
+      <span class="icon">⚠️</span>
+      <div>
+        <div><strong>Các loại hàng giả phổ biến ở Việt Nam</strong></div>
+        <div class="desc">Thủy tinh ép màu giả ruby/sapphire · Cubic Zirconia (CZ) thay diamond · Jade Bhutan (serpentine nhuộm) · San hô nhựa · Hổ phách Copal + nhựa tổng hợp · Ngọc trai vỏ sò tráng nhựa.</div>
+      </div>
+    </li>
+  </ul>
+</section>
+
+<!-- ══ MODULE 7 ══ -->
+<section class="module" id="m7">
+  <div class="module-header">
+    <div class="module-num c-gold">VII</div>
+    <div class="module-title-wrap">
+      <div class="module-eyebrow">Chương 7 · Xử Lý <span class="level-tag lv-mid">Trung cấp</span></div>
+      <div class="module-title">Các Phương Pháp Xử Lý &amp; Nâng Cấp</div>
+    </div>
+  </div>
+
+  <div class="highlight">
+    <strong>Nguyên tắc:</strong> Mọi xử lý đều phải được khai báo. Đá tự nhiên chưa xử lý (no heat, untreated) luôn có giá cao nhất. Xử lý không làm đá kém chất lượng nhưng ảnh hưởng đến giá trị thương mại.
+  </div>
+
+  <table class="gem-table" style="margin-top:24px;">
+    <thead>
+      <tr><th>Phương pháp</th><th>Đá áp dụng</th><th>Tác động</th><th>Phát hiện</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Nhiệt luyện (Heat)</strong></td>
+        <td>Ruby, Sapphire, Tanzanite, Aquamarine</td>
+        <td>Cải thiện màu + độ trong. Phổ biến &gt;95%</td>
+        <td>Silk vỡ dưới microscope, UV</td>
+      </tr>
+      <tr>
+        <td><strong>Tẩm dầu (Oiling)</strong></td>
+        <td>Emerald (hầu hết)</td>
+        <td>Lấp đầy vết nứt, cải thiện trong suốt</td>
+        <td>UV: ánh xanh lục, microscope</td>
+      </tr>
+      <tr>
+        <td><strong>Tẩm nhựa (Resin)</strong></td>
+        <td>Jade (B-jade), Ruby, Turquoise</td>
+        <td>Ổn định đá yếu, lấp đầy nứt sâu</td>
+        <td>FTIR (đặc trưng nhất)</td>
+      </tr>
+      <tr>
+        <td><strong>Chiếu xạ (Irradiation)</strong></td>
+        <td>Blue Topaz, Pearl, Diamond</td>
+        <td>Tạo hoặc đổi màu</td>
+        <td>Spectrometer, giấy xuất xứ</td>
+      </tr>
+      <tr>
+        <td><strong>Phủ màu (Coating)</strong></td>
+        <td>Topaz (Mystic), Quartz</td>
+        <td>Film màu iridescent mỏng</td>
+        <td>Quan sát facet edge dưới loupe</td>
+      </tr>
+      <tr>
+        <td><strong>Fracture Filling</strong></td>
+        <td>Ruby (glass-filled), Diamond</td>
+        <td>Lấp vết nứt bề mặt bằng thủy tinh/chì</td>
+        <td>Flash effect dưới microscope</td>
+      </tr>
+      <tr>
+        <td><strong>Nhuộm màu (Dyeing)</strong></td>
+        <td>Jade-C, Turquoise, Pearl, Coral</td>
+        <td>Thêm màu không bền, phai theo thời gian</td>
+        <td>Màu tập trung ở vết nứt, acetone</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ══ MODULE 8 ══ -->
+<section class="module" id="m8">
+  <div class="module-header">
+    <div class="module-num c-ruby">VIII</div>
+    <div class="module-title-wrap">
+      <div class="module-eyebrow">Chương 8 · Thị Trường <span class="level-tag lv-adv">Nâng cao</span></div>
+      <div class="module-title">Mua Bán, Định Giá &amp; Kinh Doanh</div>
+    </div>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Các yếu tố định giá</div>
+      <p>Màu sắc (40–50%) → Độ trong (20–25%) → Cắt mài (15%) → Carat (15%) → Xuất xứ premium (có thể +50–300%) → Chứng thư danh tiếng.</p>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Kênh mua &amp; nguồn cung</div>
+      <p>Chợ đá quý: Gemfield Bangkok, Jaipur. Đấu giá: Sotheby's, Christie's. Online: Gemselect, GemRockAuctions. Tại VN: Hà Nội (phố Hàng Bông), HCM (quận 5, 10).</p>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Bội số giá từ xuất xứ</div>
+      <p>Ruby Mogok vs Ruby Mozambique: cùng chất lượng, giá có thể x2–4. Kashmir Sapphire vs Ceylon: x3–8. Emerald Colombia vs Zambia: x1.5–2.5.</p>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Kỹ năng đàm phán</div>
+      <p>Luôn xem dưới nhiều nguồn sáng. Hỏi về xử lý trước khi hỏi giá. So sánh 3–5 viên cùng phân khúc. Đừng để lộ ngân sách. Đề nghị kiểm tra tại chỗ bằng loupe.</p>
+    </div>
+  </div>
+
+  <ul class="topic-list" style="margin-top:24px;">
+    <li>
+      <span class="icon">📊</span>
+      <div>
+        <div><strong>Bảng giá tham khảo thị trường (2024–2025)</strong></div>
+        <div class="desc">Ruby Mogok 1ct pigeon blood untreated: $5,000–50,000+. Sapphire Kashmir 1ct: $5,000–30,000+. Emerald Colombia 1ct vivid: $3,000–20,000. Diamond 1ct D/VVS1 Excellent: $8,000–12,000. Jade Imperial A 1ct: $500–10,000+.</div>
+      </div>
+    </li>
+    <li>
+      <span class="icon">💼</span>
+      <div>
+        <div><strong>Mô hình kinh doanh đá quý tại Việt Nam</strong></div>
+        <div class="desc">Nhập sỉ từ Bangkok/Jaipur → gia công trang sức tại VN → bán lẻ qua cửa hàng/online. Biên lợi nhuận thô 30–80%. Thị trường VN ưa Jade, sapphire xanh, ruby đỏ, đá phong thủy (thạch anh tím, thạch anh trắng, đá mặt trăng).</div>
+      </div>
+    </li>
+    <li>
+      <span class="icon">🌐</span>
+      <div>
+        <div><strong>Kết hợp tư vấn Bát Tự + đá quý</strong></div>
+        <div class="desc">Mô hình giá trị cao: đọc lá số → xác định ngũ hành cần bổ → tư vấn đá phù hợp → bán kèm sản phẩm. Đây là hướng khác biệt hóa mạnh tại thị trường VN.</div>
+      </div>
+    </li>
+  </ul>
+</section>
+
+<!-- ══ MODULE 9 ══ -->
+<section class="module" id="m9">
+  <div class="module-header">
+    <div class="module-num c-pearl">IX</div>
+    <div class="module-title-wrap">
+      <div class="module-eyebrow">Chương 9 · Bảo Quản <span class="level-tag lv-basic">Cơ bản</span></div>
+      <div class="module-title">Bảo Quản &amp; Chăm Sóc Ngọc</div>
+    </div>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Vệ sinh đúng cách</div>
+      <p>Hầu hết đá cứng (Mohs &gt;7): nước ấm + xà phòng nhẹ + bàn chải mềm. Ultrasonic: an toàn cho diamond, KHÔNG dùng với Emerald tẩm dầu, Opal, Pearl, Amber, đá nứt.</p>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Bảo quản &amp; lưu trữ</div>
+      <p>Mỗi viên một ngăn riêng hoặc túi nhung riêng (tránh cọ xát). Diamond có thể xước các đá khác vì cứng nhất. Tránh ánh nắng trực tiếp dài ngày (Amethyst, Kunzite phai màu).</p>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Hóa chất cần tránh</div>
+      <p>Chlorine (hồ bơi) → ăn mòn vàng trắng + giải phóng dầu tẩm Emerald. Acetone → hủy coating trên Topaz. Axit → phá hủy Pearl, Coral, Amber. Nước hoa → phai Opal.</p>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Bảo hiểm trang sức</div>
+      <p>Trang sức &gt;10 triệu VND nên mua bảo hiểm riêng. Cần ảnh + giấy giám định + hóa đơn. Bảo hiểm trang sức tại VN: Bảo Việt, PVI có gói trang sức cá nhân.</p>
+    </div>
+  </div>
+
+  <div class="highlight">
+    <strong>🧼 Quy tắc nhanh:</strong> Ngọc trai — lau khô sau khi đeo trước khi cất. Opal — tránh khô quá: có thể ngâm nước nhẹ định kỳ. Turquoise — tránh kem tay, nước hoa hoàn toàn. Hổ phách — lau vải mềm khô, tuyệt đối không ultrasonic.
+  </div>
+</section>
+
+<!-- ══ MODULE 10 ══ -->
+<section class="module" id="m10">
+  <div class="module-header">
+    <div class="module-num c-amethyst">X</div>
+    <div class="module-title-wrap">
+      <div class="module-eyebrow">Chương 10 · Tâm Linh <span class="level-tag lv-adv">Nâng cao</span></div>
+      <div class="module-title">Đá Năng Lượng — Phong Thủy &amp; Bát Tự</div>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Playfair Display',serif; color:var(--gold); font-size:1rem; margin-bottom:16px;">Ngũ Hành &amp; Đá Tương Ứng</h3>
+  <div class="ngu-grid">
+    <div class="ngu-card ngu-moc">
+      <div class="ngu-name">🌳 Mộc</div>
+      <div class="ngu-gems" style="color:rgba(212,212,212,0.75);">Ngọc bích (Jade)<br>Malachite<br>Prehnite<br>Peridot<br>Aventurine xanh</div>
+    </div>
+    <div class="ngu-card ngu-hoa">
+      <div class="ngu-name">🔥 Hỏa</div>
+      <div class="ngu-gems" style="color:rgba(212,212,212,0.75);">Ruby<br>Garnet đỏ<br>Carnelian<br>San hô đỏ<br>Jasper đỏ</div>
+    </div>
+    <div class="ngu-card ngu-tho">
+      <div class="ngu-name">⛰️ Thổ</div>
+      <div class="ngu-gems" style="color:rgba(212,212,212,0.75);">Citrine<br>Tiger's Eye<br>Obsidian vàng<br>Yellow Jade<br>Topaz vàng</div>
+    </div>
+    <div class="ngu-card ngu-kim">
+      <div class="ngu-name">⚪ Kim</div>
+      <div class="ngu-gems" style="color:rgba(212,212,212,0.75);">Diamond<br>Crystal trắng<br>Moonstone<br>Pearl<br>Selenite</div>
+    </div>
+    <div class="ngu-card ngu-thuy">
+      <div class="ngu-name">💧 Thủy</div>
+      <div class="ngu-gems" style="color:rgba(212,212,212,0.75);">Sapphire<br>Aquamarine<br>Lapis Lazuli<br>Amethyst<br>Blue Topaz</div>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Playfair Display',serif; color:var(--gold); font-size:1rem; margin:36px 0 16px;">7 Luân Xa (Chakra) &amp; Đá</h3>
+  <div class="chakra-list">
+    <div class="chakra-row"><div class="chakra-dot" style="background:#E04040;"></div><div class="chakra-name">🔴 Căn luân (Root)</div><div class="chakra-gems">Hematite · Garnet đỏ · Obsidian đen · Jasper đỏ</div></div>
+    <div class="chakra-row"><div class="chakra-dot" style="background:#E07820;"></div><div class="chakra-name">🟠 Tùy luân (Sacral)</div><div class="chakra-gems">Carnelian · Moonstone · Tiger's Eye · Amber</div></div>
+    <div class="chakra-row"><div class="chakra-dot" style="background:#E0C020;"></div><div class="chakra-name">🟡 Thái dương (Solar)</div><div class="chakra-gems">Citrine · Yellow Topaz · Pyrite · Amber vàng</div></div>
+    <div class="chakra-row"><div class="chakra-dot" style="background:#40A840;"></div><div class="chakra-name">💚 Tâm luân (Heart)</div><div class="chakra-gems">Rose Quartz · Jade xanh · Emerald · Malachite · Rhodonite</div></div>
+    <div class="chakra-row"><div class="chakra-dot" style="background:#40A8C8;"></div><div class="chakra-name">🔵 Hầu luân (Throat)</div><div class="chakra-gems">Aquamarine · Blue Lace Agate · Lapis Lazuli · Turquoise</div></div>
+    <div class="chakra-row"><div class="chakra-dot" style="background:#4040C0;"></div><div class="chakra-name">🟣 Nhãn luân (Third Eye)</div><div class="chakra-gems">Amethyst · Lapis Lazuli · Labradorite · Sodalite</div></div>
+    <div class="chakra-row"><div class="chakra-dot" style="background:#9040A0;"></div><div class="chakra-name">👑 Đỉnh luân (Crown)</div><div class="chakra-gems">Clear Quartz · Selenite · Amethyst · Diamond · Moonstone</div></div>
+  </div>
+
+  <ul class="topic-list" style="margin-top:28px;">
+    <li>
+      <span class="icon">🌙</span>
+      <div>
+        <div><strong>Thanh lọc &amp; nạp năng lượng đá</strong></div>
+        <div class="desc">Nước muối (hầu hết đá cứng) · Ánh trăng rằm qua đêm · Đất sạch 24h · Hematite / Black Tourmaline (đặt cạnh). KHÔNG dùng nước muối với Malachite, Selenite, Pyrite, Halite (tan/oxy hóa).</div>
+      </div>
+    </li>
+    <li>
+      <span class="icon">💎</span>
+      <div>
+        <div><strong>Nguyên tắc đeo đá theo Bát Tự</strong></div>
+        <div class="desc">Xác định dụng thần (yếu tố cần bổ). Kim nhật chủ yếu → cần Thổ sinh Kim → đá vàng/cam. Hỏa nhật chủ yếu → cần Mộc → đá xanh lá. Đeo tay trái nhận năng lượng, tay phải phát tán.</div>
+      </div>
+    </li>
+    <li>
+      <span class="icon">🧘</span>
+      <div>
+        <div><strong>Thiền định &amp; lập trình ý định</strong></div>
+        <div class="desc">Cầm đá trong lòng bàn tay, hít thở sâu, hình dung ý định rõ ràng. Đặt đá trên chakra liên quan khi nằm nghỉ 10–20 phút. Đây là thực hành cổ xưa — tác động thực tế qua placebo, tập trung ý niệm và cảm giác mang đá.</div>
+      </div>
+    </li>
+  </ul>
+</section>
+
+</div><!-- /container -->
+
+<!-- ══ MODULE 11 — JADE SPECIAL ══ -->
+<section style="background: linear-gradient(180deg, var(--night) 0%, rgba(15,35,25,0.5) 30%, var(--night) 100%); padding: 0;">
+<div style="border-top: 1px solid rgba(46,160,80,0.3); position:relative; overflow:hidden;">
+
+  <!-- jade bg glow -->
+  <div style="position:absolute; inset:0; pointer-events:none;
+    background: radial-gradient(ellipse at 20% 30%, rgba(30,122,80,0.12) 0%, transparent 55%),
+                radial-gradient(ellipse at 80% 70%, rgba(46,160,80,0.08) 0%, transparent 50%);"></div>
+
+  <div class="container" style="position:relative; z-index:1;">
+  <section class="module" id="m11" style="border-top: none; padding-top: 80px;">
+
+    <div class="module-header">
+      <div class="module-num" style="background:rgba(30,122,80,0.15); border-color:rgba(46,160,80,0.5); color:#6EC8A0; font-size:0.85rem; letter-spacing:1px;">★</div>
+      <div class="module-title-wrap">
+        <div class="module-eyebrow" style="color:#4EC48A;">Chuyên Đề Đặc Biệt <span class="level-tag lv-adv">Nâng cao</span></div>
+        <div class="module-title" style="color:#D4F0E0;">Ngọc — Phỉ Thúy &amp; Ngọc Bích<br><span style="font-style:italic; font-size:1.1rem; color:#6EC8A0;">Bộ Tiêu Chí Đánh Giá Toàn Diện</span></div>
+      </div>
+    </div>
+
+    <div class="highlight" style="border-color:#2E7A50; background:rgba(30,122,80,0.1);">
+      <strong style="color:#6EC8A0;">Hệ thống đánh giá ngọc</strong> trong giới chơi ngọc Á Đông xoay quanh 5 trục: <strong>Chủng · Màu · Thủy · Già/Non · Xuyên thấu</strong>. Hiểu đồng thời cả 5 mới định giá được chính xác — vì chúng tương tác lẫn nhau.
+    </div>
+
+    <!-- ────────── PHẦN 1: CÁC CHỦNG NGỌC ────────── -->
+    <h2 style="font-family:'Playfair Display',serif; font-size:1.35rem; color:#A0E8C0; margin:48px 0 6px; padding-bottom:12px; border-bottom:1px solid rgba(46,160,80,0.25);">
+      1 · Các Chủng Ngọc <span style="font-size:0.8rem; color:var(--muted); font-family:'Inter',sans-serif; font-weight:400;">(种 — Chủng / Texture Grade)</span>
+    </h2>
+    <p style="color:var(--muted); font-size:14px; margin-bottom:20px;">"Chủng" mô tả cấu trúc tinh thể, độ mịn của hạt khoáng vật bên trong. Chủng tốt → đá đặc chắc, bề mặt bóng sâu, giữ màu ổn định. Đây là yếu tố nền tảng — màu đẹp trên chủng xấu vẫn thua màu bình thường trên chủng tốt.</p>
+
+    <!-- Thang chủng visual -->
+    <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:32px;">
+
+      <div style="display:flex; align-items:center; gap:14px; background:rgba(30,200,120,0.08); border:1px solid rgba(30,200,120,0.3); border-radius:12px; padding:16px 18px;">
+        <div style="flex-shrink:0; width:44px; height:44px; border-radius:10px; background:rgba(30,200,120,0.15); border:1px solid rgba(30,200,120,0.4); display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; font-size:1.1rem; color:#4EC88A; font-weight:700;">S1</div>
+        <div style="flex:1;">
+          <div style="font-size:14px; font-weight:600; color:#A0F0C0; margin-bottom:3px;">Thủy Tinh Chủng <span style="color:var(--muted); font-weight:400; font-size:12px;">玻璃种 · Glass</span></div>
+          <div style="font-size:12px; color:var(--muted); line-height:1.7;">Đỉnh cao nhất. Tinh thể siêu mịn, trong suốt như thủy tinh. Ánh huỳnh quang "ngủ quang" (phosphorescence) xuất hiện sau khi rút đèn. Cực hiếm và cực đắt — đặc biệt khi kết hợp màu Imperial Green.</div>
+        </div>
+        <div style="text-align:right; flex-shrink:0;">
+          <div style="font-size:10px; color:var(--muted); letter-spacing:1px; text-transform:uppercase; margin-bottom:3px;">Xuyên thấu</div>
+          <div style="display:flex; gap:3px;">
+            <div style="width:10px; height:10px; border-radius:2px; background:#4EC88A;"></div>
+            <div style="width:10px; height:10px; border-radius:2px; background:#4EC88A;"></div>
+            <div style="width:10px; height:10px; border-radius:2px; background:#4EC88A;"></div>
+            <div style="width:10px; height:10px; border-radius:2px; background:#4EC88A;"></div>
+            <div style="width:10px; height:10px; border-radius:2px; background:#4EC88A;"></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:14px; background:rgba(30,160,100,0.07); border:1px solid rgba(30,160,100,0.25); border-radius:12px; padding:16px 18px;">
+        <div style="flex-shrink:0; width:44px; height:44px; border-radius:10px; background:rgba(30,160,100,0.12); border:1px solid rgba(30,160,100,0.3); display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; font-size:1.1rem; color:#6EC8A0; font-weight:700;">S2</div>
+        <div style="flex:1;">
+          <div style="font-size:14px; font-weight:600; color:#90E0B0; margin-bottom:3px;">Băng Chủng <span style="color:var(--muted); font-weight:400; font-size:12px;">冰种 · Ice</span></div>
+          <div style="font-size:12px; color:var(--muted); line-height:1.7;">Trong như băng, nhìn vào thấy ánh lạnh sâu. Không đạt độ xuyên hoàn toàn như Thủy Tinh nhưng rất gần. Đây là phân khúc premium phổ biến nhất trên thị trường cao cấp. Băng Chủng Dương Lục (băng xanh lá) được săn đón nhiều.</div>
+        </div>
+        <div style="text-align:right; flex-shrink:0;">
+          <div style="font-size:10px; color:var(--muted); letter-spacing:1px; text-transform:uppercase; margin-bottom:3px;">Xuyên thấu</div>
+          <div style="display:flex; gap:3px;">
+            <div style="width:10px; height:10px; border-radius:2px; background:#4EC88A;"></div>
+            <div style="width:10px; height:10px; border-radius:2px; background:#4EC88A;"></div>
+            <div style="width:10px; height:10px; border-radius:2px; background:#4EC88A;"></div>
+            <div style="width:10px; height:10px; border-radius:2px; background:#4EC88A;"></div>
+            <div style="width:10px; height:10px; border-radius:2px; background:rgba(78,200,138,0.2); border:1px solid rgba(78,200,138,0.3);"></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:14px; background:rgba(30,120,80,0.06); border:1px solid rgba(30,120,80,0.2); border-radius:12px; padding:16px 18px;">
+        <div style="flex-shrink:0; width:44px; height:44px; border-radius:10px; background:rgba(30,120,80,0.1); border:1px solid rgba(30,120,80,0.25); display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; font-size:1.1rem; color:#6EC8A0; font-weight:700;">S3</div>
+        <div style="flex:1;">
+          <div style="font-size:14px; font-weight:600; color:#80D0A0; margin-bottom:3px;">Nhu Băng Chủng <span style="color:var(--muted); font-weight:400; font-size:12px;">糯冰种 · Glutinous-Ice</span></div>
+          <div style="font-size:12px; color:var(--muted); line-height:1.7;">Chuyển tiếp giữa Băng và Nhu. Cảm giác mờ đục nhẹ bên trong nhưng ánh sáng vẫn xuyên được nhiều. Màu sắc thường đẹp hơn Băng Chủng thuần vì cấu trúc "giữ màu" tốt hơn.</div>
+        </div>
+        <div style="text-align:right; flex-shrink:0;">
+          <div style="font-size:10px; color:var(--muted); letter-spacing:1px; text-transform:uppercase; margin-bottom:3px;">Xuyên thấu</div>
+          <div style="display:flex; gap:3px;">
+            <div style="width:10px; height:10px; border-radius:2px; background:#4EC88A;"></div>
+            <div style="width:10px; height:10px; border-radius:2px; background:#4EC88A;"></div>
+            <div style="width:10px; height:10px; border-radius:2px; background:#4EC88A;"></div>
+            <div style="width:10px; height:10px; border-radius:2px; background:rgba(78,200,138,0.2); border:1px solid rgba(78,200,138,0.3);"></div>
+            <div style="width:10px; height:10px; border-radius:2px; background:rgba(78,200,138,0.2); border:1px solid rgba(78,200,138,0.3);"></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:14px; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 18px;">
+        <div style="flex-shrink:0; width:44px; height:44px; border-radius:10px; background:var(--card); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; font-size:1.1rem; color:var(--muted); font-weight:700;">S4</div>
+        <div style="flex:1;">
+          <div style="font-size:14px; font-weight:600; color:var(--text); margin-bottom:3px;">Nhu Chủng <span style="color:var(--muted); font-weight:400; font-size:12px;">糯种 · Glutinous Rice</span></div>
+          <div style="font-size:12px; color:var(--muted); line-height:1.7;">Trắng đục mờ như gạo nếp. Ánh sáng xuyên qua nhưng không thấy rõ bên trong. Phân khúc tầm trung phổ biến nhất. Nhu Chủng màu đẹp (tím, hồng) vẫn có giá trị thẩm mỹ cao.</div>
+        </div>
+        <div style="text-align:right; flex-shrink:0;">
+          <div style="font-size:10px; color:var(--muted); letter-spacing:1px; text-transform:uppercase; margin-bottom:3px;">Xuyên thấu</div>
+          <div style="display:flex; gap:3px;">
+            <div style="width:10px; height:10px; border-radius:2px; background:#4EC88A;"></div>
+            <div style="width:10px; height:10px; border-radius:2px; background:#4EC88A;"></div>
+            <div style="width:10px; height:10px; border-radius:2px; background:rgba(78,200,138,0.2); border:1px solid rgba(78,200,138,0.3);"></div>
+            <div style="width:10px; height:10px; border-radius:2px; background:rgba(78,200,138,0.2); border:1px solid rgba(78,200,138,0.3);"></div>
+            <div style="width:10px; height:10px; border-radius:2px; background:rgba(78,200,138,0.2); border:1px solid rgba(78,200,138,0.3);"></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:14px; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 18px;">
+        <div style="flex-shrink:0; width:44px; height:44px; border-radius:10px; background:var(--card); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; font-size:1.1rem; color:var(--muted); font-weight:700;">S5</div>
+        <div style="flex:1;">
+          <div style="font-size:14px; font-weight:600; color:var(--text); margin-bottom:3px;">Kim Ty Chủng <span style="color:var(--muted); font-weight:400; font-size:12px;">金丝种 · Golden Thread</span></div>
+          <div style="font-size:12px; color:var(--muted); line-height:1.7;">Màu xanh phân bố theo đường sợi song song hoặc dạng mạng. Không đồng đều nhưng tạo hoa văn riêng biệt. Giá trị phụ thuộc nhiều vào sự hài hòa của hoa văn màu.</div>
+        </div>
+        <div style="text-align:right; flex-shrink:0;">
+          <div style="font-size:10px; color:var(--muted); letter-spacing:1px; text-transform:uppercase; margin-bottom:3px;">Xuyên thấu</div>
+          <div style="display:flex; gap:3px;">
+            <div style="width:10px; height:10px; border-radius:2px; background:#4EC88A;"></div>
+            <div style="width:10px; height:10px; border-radius:2px; background:rgba(78,200,138,0.2); border:1px solid rgba(78,200,138,0.3);"></div>
+            <div style="width:10px; height:10px; border-radius:2px; background:rgba(78,200,138,0.2); border:1px solid rgba(78,200,138,0.3);"></div>
+            <div style="width:10px; height:10px; border-radius:2px; background:rgba(78,200,138,0.2); border:1px solid rgba(78,200,138,0.3);"></div>
+            <div style="width:10px; height:10px; border-radius:2px; background:rgba(78,200,138,0.2); border:1px solid rgba(78,200,138,0.3);"></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:14px; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 18px;">
+        <div style="flex-shrink:0; width:44px; height:44px; border-radius:10px; background:var(--card); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; font-size:1.1rem; color:var(--muted); font-weight:700;">S6</div>
+        <div style="flex:1;">
+          <div style="font-size:14px; font-weight:600; color:var(--text); margin-bottom:3px;">Đậu Chủng <span style="color:var(--muted); font-weight:400; font-size:12px;">豆种 · Bean</span></div>
+          <div style="font-size:12px; color:var(--muted); line-height:1.7;">Phổ biến nhất trên thị trường đại chúng. Hạt tinh thể thô nhìn thấy như hạt đậu. Mờ đục, ít xuyên. Phù hợp đồ trang sức bình dân và đá phong thủy giá tốt.</div>
+        </div>
+        <div style="text-align:right; flex-shrink:0;">
+          <div style="font-size:10px; color:var(--muted); letter-spacing:1px; text-transform:uppercase; margin-bottom:3px;">Xuyên thấu</div>
+          <div style="display:flex; gap:3px;">
+            <div style="width:10px; height:10px; border-radius:2px; background:rgba(78,200,138,0.2); border:1px solid rgba(78,200,138,0.3);"></div>
+            <div style="width:10px; height:10px; border-radius:2px; background:rgba(78,200,138,0.2); border:1px solid rgba(78,200,138,0.3);"></div>
+            <div style="width:10px; height:10px; border-radius:2px; background:rgba(78,200,138,0.2); border:1px solid rgba(78,200,138,0.3);"></div>
+            <div style="width:10px; height:10px; border-radius:2px; background:rgba(78,200,138,0.2); border:1px solid rgba(78,200,138,0.3);"></div>
+            <div style="width:10px; height:10px; border-radius:2px; background:rgba(78,200,138,0.2); border:1px solid rgba(78,200,138,0.3);"></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end chủng list -->
+
+
+    <!-- ────────── PHẦN 2: MÀU SẮC ────────── -->
+    <h2 style="font-family:'Playfair Display',serif; font-size:1.35rem; color:#A0E8C0; margin:48px 0 6px; padding-bottom:12px; border-bottom:1px solid rgba(46,160,80,0.25);">
+      2 · Màu Sắc Của Ngọc <span style="font-size:0.8rem; color:var(--muted); font-family:'Inter',sans-serif; font-weight:400;">(色 — Sắc)</span>
+    </h2>
+    <p style="color:var(--muted); font-size:14px; margin-bottom:20px;">Đánh giá màu ngọc theo 4 chiều: <strong style="color:var(--text);">Chính · Nồng · Thuần · Đều</strong>. Màu chính xanh lá (lục) là quý nhất — nhưng sắc tím, hồng, vàng ngày càng được săn đón.</p>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:28px;">
+
+      <!-- Lục -->
+      <div style="border-radius:12px; overflow:hidden; border:1px solid rgba(30,160,80,0.4);">
+        <div style="background:linear-gradient(135deg, #0D3D20, #1A6640, #0D3D20); padding:16px 18px 12px;">
+          <div style="font-size:13px; font-weight:700; color:#6EF0A0; letter-spacing:0.5px;">🟢 XANH LỤC</div>
+          <div style="font-size:10px; color:rgba(110,240,160,0.6); letter-spacing:2px; margin-top:2px;">VERDE · LỤC</div>
+        </div>
+        <div style="background:var(--card); padding:14px 16px;">
+          <div style="font-size:12px; color:var(--muted); line-height:1.8;">
+            <div>• <strong style="color:#6EF0A0;">Đế Lục (帝绿)</strong>: Xanh hoàng gia — đỉnh cao, bão hòa, vivid, không có sắc phụ xanh lam hay vàng</div>
+            <div>• <strong style="color:var(--text);">Dương Lục</strong>: Xanh sáng tươi, ánh nhẹ</div>
+            <div>• <strong style="color:var(--text);">Thâm Lục</strong>: Xanh đậm sâu</div>
+            <div>• <strong style="color:var(--text);">Mặc Lục</strong>: Xanh gần đen</div>
+            <div style="margin-top:8px; padding-top:8px; border-top:1px solid var(--border); font-style:italic;">→ Sắc lý tưởng: Xanh lá thuần, không ngả vàng, không ngả xanh lam</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tử -->
+      <div style="border-radius:12px; overflow:hidden; border:1px solid rgba(120,60,180,0.4);">
+        <div style="background:linear-gradient(135deg, #2D1040, #5A2880, #2D1040); padding:16px 18px 12px;">
+          <div style="font-size:13px; font-weight:700; color:#C890F0; letter-spacing:0.5px;">🟣 TÍM — TỬ LA LAN</div>
+          <div style="font-size:10px; color:rgba(200,144,240,0.6); letter-spacing:2px; margin-top:2px;">LAVENDER · 紫罗兰</div>
+        </div>
+        <div style="background:var(--card); padding:14px 16px;">
+          <div style="font-size:12px; color:var(--muted); line-height:1.8;">
+            <div>• <strong style="color:#C890F0;">Xuân Thái Địa</strong>: Tím xuân sáng, phụ nữ ưa nhất</div>
+            <div>• <strong style="color:var(--text);">Tử Đường Đầu</strong>: Tím đỏ đậm — quý hiếm</div>
+            <div>• <strong style="color:var(--text);">Tím nhạt</strong>: Phổ biến, cần chủng tốt để tôn màu</div>
+            <div style="margin-top:8px; padding-top:8px; border-top:1px solid var(--border); font-style:italic;">→ Tử La Lan chủng tốt ngày càng vượt lục về giá tại thị trường trẻ</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hồng -->
+      <div style="border-radius:12px; overflow:hidden; border:1px solid rgba(200,60,100,0.35);">
+        <div style="background:linear-gradient(135deg, #3D1020, #7A2040, #3D1020); padding:16px 18px 12px;">
+          <div style="font-size:13px; font-weight:700; color:#F090B0; letter-spacing:0.5px;">🩷 HỒNG — HỒNG PHI</div>
+          <div style="font-size:10px; color:rgba(240,144,176,0.6); letter-spacing:2px; margin-top:2px;">RED / PINK · 红翡</div>
+        </div>
+        <div style="background:var(--card); padding:14px 16px;">
+          <div style="font-size:12px; color:var(--muted); line-height:1.8;">
+            <div>• <strong style="color:#F090B0;">Hồng Phi</strong>: Đỏ hồng tươi sáng — quý nhất nhóm hồng/đỏ</div>
+            <div>• <strong style="color:var(--text);">Hoàng Phi</strong>: Vàng cam ấm (thực ra là nhóm Thổ)</div>
+            <div>• <strong style="color:var(--text);">Đỏ Thẫm</strong>: Từ oxy hóa sắt, thường ở vỏ nguyên liệu</div>
+            <div style="margin-top:8px; padding-top:8px; border-top:1px solid var(--border); font-style:italic;">→ "Phi thúy vàng đỏ, ngọc lục xanh" — câu kinh điển của giới chơi ngọc</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bạch & Hắc -->
+      <div style="border-radius:12px; overflow:hidden; border:1px solid rgba(160,160,200,0.25);">
+        <div style="background:linear-gradient(135deg, #1A1A2E, #2A2A44, #1A1A2E); padding:16px 18px 12px;">
+          <div style="font-size:13px; font-weight:700; color:#D0D0F0; letter-spacing:0.5px;">⚪ TRẮNG &amp; ⚫ ĐEN</div>
+          <div style="font-size:10px; color:rgba(200,200,240,0.6); letter-spacing:2px; margin-top:2px;">WHITE · BLACK · 白 / 墨</div>
+        </div>
+        <div style="background:var(--card); padding:14px 16px;">
+          <div style="font-size:12px; color:var(--muted); line-height:1.8;">
+            <div>• <strong style="color:#D0D0F0;">Bạch Ngọc</strong>: Trắng tinh thuần, cần chủng thủy tinh để đẹp</div>
+            <div>• <strong style="color:var(--text);">Mặc Thúy</strong>: Đen Jadeite từ graphite — khi ánh đèn xuyên qua sẽ thấy xanh lá ẩn bên trong</div>
+            <div style="margin-top:8px; padding-top:8px; border-top:1px solid var(--border); font-style:italic;">→ Mặc Thúy ít người biết nhưng giới sành chơi đánh giá rất cao</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bảng tiêu chí màu -->
+    <table class="gem-table">
+      <thead>
+        <tr>
+          <th>Tiêu chí màu</th>
+          <th>Mô tả</th>
+          <th>Màu lý tưởng</th>
+          <th>Màu cần tránh</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Chính (正)</strong></td>
+          <td>Màu thuần, không có sắc phụ lệch</td>
+          <td>Lục thuần, không vàng không lam</td>
+          <td>Lục-vàng, lục-lam lệch nhiều</td>
+        </tr>
+        <tr>
+          <td><strong>Nồng (浓)</strong></td>
+          <td>Độ đậm bão hòa cao</td>
+          <td>Vivid — đậm vừa, không quá tối</td>
+          <td>Nhạt (faint) hoặc quá đậm → đen</td>
+        </tr>
+        <tr>
+          <td><strong>Thuần (阳)</strong></td>
+          <td>Màu tươi sáng, không ngái</td>
+          <td>Xanh lá xuân tươi sáng</td>
+          <td>Màu "ngái" — trầm đục như lá già</td>
+        </tr>
+        <tr>
+          <td><strong>Đều (匀)</strong></td>
+          <td>Phân bố màu đồng đều</td>
+          <td>Màu trải đều toàn viên</td>
+          <td>Loang lổ, màu tập trung một góc</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="highlight" style="border-color:#2E7A50; background:rgba(30,122,80,0.08); margin-top:0;">
+      <strong style="color:#6EC8A0;">💡 Quy tắc phối màu quý:</strong> Kết hợp nhiều màu trong một viên gọi là <strong>"Phúc Lộc Thọ"</strong> (xanh + đỏ + tím) hoặc <strong>"Tam Sắc"</strong> — đây là hàng sưu tập đặc biệt và thường tăng giá theo cấp số nhân so với từng màu riêng lẻ.
+    </div>
+
+
+    <!-- ────────── PHẦN 3: ĐỘ BĂNG KEO ────────── -->
+    <h2 style="font-family:'Playfair Display',serif; font-size:1.35rem; color:#A0E8C0; margin:48px 0 6px; padding-bottom:12px; border-bottom:1px solid rgba(46,160,80,0.25);">
+      3 · Độ Băng Keo <span style="font-size:0.8rem; color:var(--muted); font-family:'Inter',sans-serif; font-weight:400;">(胶感 — Jiāo gǎn · Glassy-resin feel)</span>
+    </h2>
+    <p style="color:var(--muted); font-size:14px; margin-bottom:24px;">"Băng keo" là cảm giác keo dẻo như nhựa đặc, sâu, đầy đặn khi nhìn vào bề mặt đá — khác với trong suốt lạnh như thủy tinh. Đây là đặc tính mà người chơi lâu năm mới cảm nhận được, không có thước đo khoa học. Nó chỉ xuất hiện trên Thủy Tinh Chủng và Băng Chủng cấp cao nhất.</p>
+
+    <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:28px;">
+      <div style="background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px 18px;">
+        <div style="display:flex; gap:14px; align-items:flex-start;">
+          <div style="font-size:22px; flex-shrink:0;">🧊</div>
+          <div>
+            <div style="font-size:14px; font-weight:600; color:var(--text); margin-bottom:4px;">Băng keo là gì?</div>
+            <div style="font-size:13px; color:var(--muted); line-height:1.8;">Hình dung: nhìn vào cốc nước vs nhìn vào keo silicon trong. Nước = Thủy Tinh Chủng trong suốt. Keo silicon trong = Băng Keo — có chiều sâu, có độ "dày" ánh sáng bên trong, nhìn không "rỗng". Tiếng Trung gọi là <em>胶感</em> (jiāo gǎn), tiếng Anh chưa có từ tương đương chính xác.</div>
+          </div>
+        </div>
+      </div>
+      <div style="background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px 18px;">
+        <div style="display:flex; gap:14px; align-items:flex-start;">
+          <div style="font-size:22px; flex-shrink:0;">🔦</div>
+          <div>
+            <div style="font-size:14px; font-weight:600; color:var(--text); margin-bottom:4px;">Cách kiểm tra độ băng keo</div>
+            <div style="font-size:13px; color:var(--muted); line-height:1.8;">Chiếu đèn pin mạnh (6500K) từ phía sau viên ngọc. Đá có độ băng keo cao: ánh sáng khuếch tán đều, mềm mại, tràn đầy bên trong, không tạo điểm sáng nhọn. Đá thủy tinh thông thường: ánh sáng đi thẳng, tạo điểm sáng rõ ở trung tâm.</div>
+          </div>
+        </div>
+      </div>
+      <div style="background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px 18px;">
+        <div style="display:flex; gap:14px; align-items:flex-start;">
+          <div style="font-size:22px; flex-shrink:0;">⚠️</div>
+          <div>
+            <div style="font-size:14px; font-weight:600; color:var(--text); margin-bottom:4px;">Phân biệt băng keo thật — giả</div>
+            <div style="font-size:13px; color:var(--muted); line-height:1.8;">Jade B-jade (tẩm polymer) cũng tạo cảm giác "keo" nhưng là do nhựa bơm vào — không phải cấu trúc tinh thể tự nhiên. Test: soi UV longwave → B-jade phát xanh lam mạnh. FTIR sẽ xác nhận dứt khoát. Luôn yêu cầu chứng thư với Jade A trước khi mua hàng triệu đồng trở lên.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ────────── PHẦN 4: ĐỘ GIÀ ────────── -->
+    <h2 style="font-family:'Playfair Display',serif; font-size:1.35rem; color:#A0E8C0; margin:48px 0 6px; padding-bottom:12px; border-bottom:1px solid rgba(46,160,80,0.25);">
+      4 · Độ Già — Ngọc Già &amp; Ngọc Non <span style="font-size:0.8rem; color:var(--muted); font-family:'Inter',sans-serif; font-weight:400;">(老种 vs 嫩种 · Old / New Crystal Structure)</span>
+    </h2>
+    <p style="color:var(--muted); font-size:14px; margin-bottom:24px;">"Độ già" không phải tuổi của viên ngọc mà là <strong style="color:var(--text);">mức độ trưởng thành của cấu trúc tinh thể</strong> — được hình thành bởi áp suất địa chất, nhiệt độ và thời gian triệu năm. Ngọc già = tinh thể nhỏ mịn + liên kết chặt = chủng tốt hơn.</p>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:24px;">
+      <div style="background:rgba(30,122,80,0.08); border:1px solid rgba(46,160,80,0.3); border-radius:12px; padding:20px;">
+        <div style="font-size:13px; font-weight:700; color:#6EE0A0; margin-bottom:14px;">🌳 NGỌC GIÀ (老种)</div>
+        <ul style="list-style:none; display:flex; flex-direction:column; gap:8px;">
+          <li style="font-size:12px; color:var(--muted); display:flex; gap:8px;"><span style="color:#6EE0A0; flex-shrink:0;">✓</span>Tinh thể siêu mịn (sub-micron)</li>
+          <li style="font-size:12px; color:var(--muted); display:flex; gap:8px;"><span style="color:#6EE0A0; flex-shrink:0;">✓</span>Mật độ cao, nặng tay so với kích cỡ</li>
+          <li style="font-size:12px; color:var(--muted); display:flex; gap:8px;"><span style="color:#6EE0A0; flex-shrink:0;">✓</span>Bề mặt sau mài bóng cực láng</li>
+          <li style="font-size:12px; color:var(--muted); display:flex; gap:8px;"><span style="color:#6EE0A0; flex-shrink:0;">✓</span>Ánh sâu, có chiều sâu (depth)</li>
+          <li style="font-size:12px; color:var(--muted); display:flex; gap:8px;"><span style="color:#6EE0A0; flex-shrink:0;">✓</span>Màu sắc ổn định, không phai</li>
+          <li style="font-size:12px; color:var(--muted); display:flex; gap:8px;"><span style="color:#6EE0A0; flex-shrink:0;">✓</span>Phân bố từ mỏ lâu đời (Lão Khanh)</li>
+        </ul>
+      </div>
+      <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px;">
+        <div style="font-size:13px; font-weight:700; color:var(--muted); margin-bottom:14px;">🌱 NGỌC NON (嫩种)</div>
+        <ul style="list-style:none; display:flex; flex-direction:column; gap:8px;">
+          <li style="font-size:12px; color:var(--muted); display:flex; gap:8px;"><span style="color:var(--muted); flex-shrink:0;">—</span>Tinh thể thô, hạt lớn hơn</li>
+          <li style="font-size:12px; color:var(--muted); display:flex; gap:8px;"><span style="color:var(--muted); flex-shrink:0;">—</span>Nhẹ hơn, cấu trúc lỏng hơn</li>
+          <li style="font-size:12px; color:var(--muted); display:flex; gap:8px;"><span style="color:var(--muted); flex-shrink:0;">—</span>Bề mặt bóng nhưng "nổi" không sâu</li>
+          <li style="font-size:12px; color:var(--muted); display:flex; gap:8px;"><span style="color:var(--muted); flex-shrink:0;">—</span>Ánh "bằng", không có chiều sâu</li>
+          <li style="font-size:12px; color:var(--muted); display:flex; gap:8px;"><span style="color:var(--muted); flex-shrink:0;">—</span>Màu dễ phai hoặc biến sắc</li>
+          <li style="font-size:12px; color:var(--muted); display:flex; gap:8px;"><span style="color:var(--muted); flex-shrink:0;">—</span>Từ mỏ mới khai thác (Tân Khanh)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px; margin-bottom:12px;">
+      <div style="font-size:13px; font-weight:600; color:var(--gold-light); margin-bottom:10px;">🔍 Cách nhận biết độ già bằng tay và mắt</div>
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px;">
+        <div style="text-align:center; padding:12px; background:var(--card); border-radius:8px; border:1px solid var(--border);">
+          <div style="font-size:20px; margin-bottom:6px;">✋</div>
+          <div style="font-size:11px; color:var(--gold); font-weight:600; margin-bottom:4px;">Cầm tay</div>
+          <div style="font-size:11px; color:var(--muted);">Ngọc già lạnh và nặng. Đặt lên lưng bàn tay — mát lâu hơn đáng kể</div>
+        </div>
+        <div style="text-align:center; padding:12px; background:var(--card); border-radius:8px; border:1px solid var(--border);">
+          <div style="font-size:20px; margin-bottom:6px;">👁️</div>
+          <div style="font-size:11px; color:var(--gold); font-weight:600; margin-bottom:4px;">Nhìn mặt cắt</div>
+          <div style="font-size:11px; color:var(--muted);">Ngọc già: mặt cắt vỡ vụn mịn. Ngọc non: hạt tinh thể thô thấy rõ dưới loupe</div>
+        </div>
+        <div style="text-align:center; padding:12px; background:var(--card); border-radius:8px; border:1px solid var(--border);">
+          <div style="font-size:20px; margin-bottom:6px;">🔦</div>
+          <div style="font-size:11px; color:var(--gold); font-weight:600; margin-bottom:4px;">Chiếu đèn</div>
+          <div style="font-size:11px; color:var(--muted);">Ngọc già: ánh sáng khuếch tán mịn. Ngọc non: thấy hạt tinh thể riêng lẻ phản sáng</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight" style="border-color:#7A6030; background:rgba(201,168,76,0.06);">
+      <strong>📍 Lão Khanh vs Tân Khanh:</strong> "Lão Khanh" (老坑) là vùng khai thác cũ ở Miến Điện — phần lớn đã cạn kiệt. Ngọc từ Lão Khanh thường già hơn do môi trường địa chất khắc nghiệt hơn trong triệu năm. "Tân Khanh" (新坑) là mỏ mới — ngọc thường non hơn. Nhưng không phải tuyệt đối — có thể tìm thấy ngọc già ở mỏ mới và ngược lại.
+    </div>
+
+
+    <!-- ────────── PHẦN 5: ĐỘ XUYÊN THẤU ────────── -->
+    <h2 style="font-family:'Playfair Display',serif; font-size:1.35rem; color:#A0E8C0; margin:48px 0 6px; padding-bottom:12px; border-bottom:1px solid rgba(46,160,80,0.25);">
+      5 · Độ Xuyên Thấu <span style="font-size:0.8rem; color:var(--muted); font-family:'Inter',sans-serif; font-weight:400;">(透明度 / 水头 · Transparency / Water Head)</span>
+    </h2>
+    <p style="color:var(--muted); font-size:14px; margin-bottom:24px;">Giới chơi ngọc dùng khái niệm <strong style="color:var(--text);">"Thủy Đầu"</strong> (水头 · shuǐ tóu) để đo độ xuyên thấu — nghĩa đen là "đầu nước", ý chỉ mức độ ánh sáng "chảy" qua đá. Một ngón tay nước = ánh sáng xuyên sâu khoảng 3mm. Đây là cách đo trực quan truyền thống.</p>
+
+    <!-- Thủy đầu visual scale -->
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:24px; margin-bottom:24px;">
+      <div style="font-size:12px; color:var(--muted); letter-spacing:2px; text-transform:uppercase; margin-bottom:20px;">Thang Đo Thủy Đầu — Từ Cao Đến Thấp</div>
+      
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <!-- 3 ngón -->
+        <div style="display:flex; align-items:center; gap:16px;">
+          <div style="flex-shrink:0; min-width:90px; font-size:12px; color:var(--text); font-weight:600;">Ba ngón 💧💧💧</div>
+          <div style="flex:1; height:8px; background:linear-gradient(90deg, #4EC88A, #2E8A50); border-radius:4px;"></div>
+          <div style="flex-shrink:0; font-size:11px; color:var(--muted); min-width:120px;">Xuyên &gt;9mm. Thủy Tinh Chủng. Cực hiếm.</div>
+        </div>
+        <!-- 2 ngón -->
+        <div style="display:flex; align-items:center; gap:16px;">
+          <div style="flex-shrink:0; min-width:90px; font-size:12px; color:var(--text); font-weight:600;">Hai ngón 💧💧</div>
+          <div style="flex:1; height:8px; background:linear-gradient(90deg, #3EA870, #1E6840); border-radius:4px;"></div>
+          <div style="flex-shrink:0; font-size:11px; color:var(--muted); min-width:120px;">Xuyên 6–9mm. Băng Chủng tốt. Premium.</div>
+        </div>
+        <!-- 1 ngón -->
+        <div style="display:flex; align-items:center; gap:16px;">
+          <div style="flex-shrink:0; min-width:90px; font-size:12px; color:var(--text); font-weight:600;">Một ngón 💧</div>
+          <div style="flex:1; height:8px; background:linear-gradient(90deg, #2A8850, #185030); border-radius:4px;"></div>
+          <div style="flex-shrink:0; font-size:11px; color:var(--muted); min-width:120px;">Xuyên 3–6mm. Băng-Nhu. Tốt.</div>
+        </div>
+        <!-- Nửa ngón -->
+        <div style="display:flex; align-items:center; gap:16px;">
+          <div style="flex-shrink:0; min-width:90px; font-size:12px; color:var(--text); font-weight:600;">Nửa ngón 💧½</div>
+          <div style="flex:1; height:8px; background:linear-gradient(90deg, #1E6040, #0E3020); border-radius:4px;"></div>
+          <div style="flex-shrink:0; font-size:11px; color:var(--muted); min-width:120px;">Xuyên 1–3mm. Nhu Chủng. Bình thường.</div>
+        </div>
+        <!-- Không xuyên -->
+        <div style="display:flex; align-items:center; gap:16px;">
+          <div style="flex-shrink:0; min-width:90px; font-size:12px; color:var(--muted); font-weight:600;">Không xuyên ✗</div>
+          <div style="flex:1; height:8px; background:var(--border); border-radius:4px;"></div>
+          <div style="flex-shrink:0; font-size:11px; color:var(--muted); min-width:120px;">Đậu Chủng trở xuống. Đại chúng.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cách test -->
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:24px;">
+      <div class="card">
+        <div class="card-title"><span class="dot" style="background:#4EC88A;"></span>Kỹ thuật chiếu đèn cơ bản</div>
+        <p style="font-size:12px;">Dùng đèn pin LED 6500K đặt sát mặt sau viên ngọc trong phòng tối. Nhìn từ trên xuống — ánh sáng hồng đỏ ấm xuyên qua là ngọc già tốt. Ánh lạnh xám hay đứt đoạn là ngọc non/chủng xấu.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot" style="background:#4EC88A;"></span>Quy tắc Thủy &amp; Sắc</div>
+        <p style="font-size:12px;">Ngọc xuyên nhiều (thủy cao) nhưng màu quá nhạt → kém giá. Ngọc màu đẹp nhưng xuyên kém → màu tù. Điểm ngọt nhất: màu <em>vừa đủ đậm</em> + xuyên <em>vừa đủ sâu</em> = giá trị cao nhất.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot" style="background:#4EC88A;"></span>Ngọc mỏng vs ngọc dày</div>
+        <p style="font-size:12px;">Cùng một viên ngọc, mài mỏng hơn → xuyên thấu tốt hơn. Cần phân biệt "xuyên thực" (do chủng) vs "xuyên do mỏng". Tỷ lệ độ dày tiêu chuẩn: vòng tay &gt;7mm, mặt dây &gt;4mm.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot" style="background:#4EC88A;"></span>Màu sắc dưới đèn</div>
+        <p style="font-size:12px;">Ánh sáng nhân tạo thay đổi màu ngọc rõ rệt. Đèn vàng (3000K) làm xanh lá chuyển vàng. Đèn trắng (6500K) cho màu trung thực nhất. Luôn xem ngọc dưới ít nhất 2 nguồn sáng trước khi quyết định.</p>
+      </div>
+    </div>
+
+    <!-- Bảng tổng hợp 5 yếu tố -->
+    <h2 style="font-family:'Playfair Display',serif; font-size:1.2rem; color:#A0E8C0; margin:40px 0 16px;">Bảng Tổng Hợp — 5 Yếu Tố Định Giá Ngọc</h2>
+
+    <table class="gem-table">
+      <thead>
+        <tr>
+          <th>Yếu tố</th>
+          <th>Tốt nhất</th>
+          <th>Trung bình</th>
+          <th>Kém</th>
+          <th>Trọng số</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong style="color:#A0E8C0;">Chủng (Texture)</strong></td>
+          <td>Thủy Tinh / Băng</td>
+          <td>Nhu Băng / Nhu</td>
+          <td>Kim Ty / Đậu</td>
+          <td><span class="gem-badge badge-e">~30%</span></td>
+        </tr>
+        <tr>
+          <td><strong style="color:#A0E8C0;">Màu (Color)</strong></td>
+          <td>Đế Lục / Xuân Thái</td>
+          <td>Dương Lục / Tử nhạt</td>
+          <td>Màu ngái / Loang</td>
+          <td><span class="gem-badge badge-e">~35%</span></td>
+        </tr>
+        <tr>
+          <td><strong style="color:#A0E8C0;">Băng Keo (Glow)</strong></td>
+          <td>Ngủ quang, keo sâu</td>
+          <td>Trong sáng bình thường</td>
+          <td>Mờ, không chiều sâu</td>
+          <td><span class="gem-badge badge-e">~15%</span></td>
+        </tr>
+        <tr>
+          <td><strong style="color:#A0E8C0;">Già/Non (Maturity)</strong></td>
+          <td>Già — Lão Khanh</td>
+          <td>Trung bình</td>
+          <td>Non — Tân Khanh mới</td>
+          <td><span class="gem-badge badge-e">~10%</span></td>
+        </tr>
+        <tr>
+          <td><strong style="color:#A0E8C0;">Xuyên Thấu (Thủy)</strong></td>
+          <td>Ba ngón (>9mm)</td>
+          <td>Một ngón (3–6mm)</td>
+          <td>Nửa ngón hoặc kém</td>
+          <td><span class="gem-badge badge-e">~10%</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="highlight" style="border-color:#2E7A50; background:rgba(30,122,80,0.08); margin-top:24px;">
+      <strong style="color:#6EC8A0;">🎯 Công thức thực chiến khi đi xem ngọc:</strong><br>
+      <span style="line-height:2.2;">
+      1️⃣ Xác định chủng trước — chiếu đèn, quan sát hạt tinh thể<br>
+      2️⃣ Đánh giá màu dưới đèn 6500K — chính / nồng / thuần / đều<br>
+      3️⃣ Kiểm tra xuyên thấu — số ngón nước<br>
+      4️⃣ Cảm nhận băng keo — nhìn nghiêng bề mặt dưới góc 45°<br>
+      5️⃣ Xác nhận Jade A — yêu cầu chứng thư GIA/GIT/GGTL<br>
+      6️⃣ So sánh ít nhất 3–5 viên cùng phân khúc trước khi quyết định
+      </span>
+    </div>
+
+  </section>
+  </div><!-- /container inner -->
+</div>
+</section>
+
+<footer class="footer">
+  <em>Giáo Trình Ngọc Học</em><br>
+  Khoa học · Văn hóa · Tâm linh<br>
+  <span style="color:var(--border);">──────────────────</span><br>
+  <span style="font-size:11px;">Kiến thức là nền tảng — phán đoán là nghệ thuật.<br>Luôn xác minh với gemologist có chứng chỉ GIA/FGA trước các quyết định mua bán lớn.</span>
+</footer>
+
+<script>
+  function scrollTo(id) {
+    document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+  }
+
+  function toggleAcc(btn) {
+    const body = btn.nextElementSibling;
+    const isOpen = btn.classList.contains('open');
+    btn.classList.toggle('open', !isOpen);
+    body.classList.toggle('open', !isOpen);
+  }
+
+  // highlight active nav on scroll
+  const sections = document.querySelectorAll('.module');
+  const navBtns = document.querySelectorAll('.nav-btn');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const idx = Array.from(sections).indexOf(e.target);
+        navBtns.forEach(b => b.classList.remove('active'));
+        if (navBtns[idx]) navBtns[idx].classList.add('active');
+      }
+    });
+  }, { threshold: 0.3 });
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
